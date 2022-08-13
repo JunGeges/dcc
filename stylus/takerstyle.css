@@ -1,0 +1,587 @@
+.container-my {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	box-sizing: border-box;
+}
+
+.flex{
+	display: flex;
+}
+
+.flex-c {
+	display: flex;
+	flex-direction: column;
+}
+
+.flex-r {
+	display: flex;
+	flex-direction: row;
+}
+
+.fj-c {
+	justify-content: center;
+}
+
+.fj-b {
+	justify-content: space-between;
+}
+
+.fai-c {
+	align-items: center;
+}
+
+.logo-60 {
+	width: 60rpx;
+	height: 60rpx;
+}
+
+.logo-80 {
+	width: 80rpx;
+	height: 80rpx;
+}
+
+.logo-100 {
+	width: 100rpx;
+	height: 100rpx;
+}
+
+.logo-150 {
+	width: 150rpx;
+	height: 150rpx;
+}
+
+.logo-200 {
+	width: 200rpx;
+	height: 200rpx;
+}
+
+.logo-300 {
+	width: 300rpx;
+	height: 300rpx;
+}
+
+.mrgl-10 {
+	margin-left: 10rpx;
+}
+
+.mrgl-15 {
+	margin-left: 15rpx;
+}
+
+.mrgr-10 {
+	margin-right: 10rpx;
+}
+
+.mrgr-15 {
+	margin-right: 15rpx;
+}
+
+.mrgt-5 {
+	margin-top: 5rpx;
+}
+
+.mrgt-10 {
+	margin-top: 10rpx;
+}
+
+.mrgt-30 {
+	margin-top: 30rpx;
+}
+
+.mrgt-50 {
+	margin-top: 50rpx;
+}
+
+.mrgt-80 {
+	margin-top: 80rpx;
+}
+
+.mrgt-100 {
+	margin-top: 100rpx;
+}
+
+.bgc-red {
+	background-color: #f00;
+}
+
+.bgc-home {
+	background-color: #01863B;
+}
+
+.bgc-fff {
+	background-color: #FFFFFF;
+}
+
+.bgc-f7 {
+	background-color: #F7F7F7;
+}
+
+.bgc-999 {
+	background-color: #999999;
+}
+
+.col-red{
+	color: #f00;
+}
+
+.col-home {
+	color: #01863B;
+}
+
+.col-fff {
+	color: #ffffff;
+}
+
+.col-333 {
+	color: #333333;
+}
+
+.col-666 {
+	color: #666666;
+}
+
+.col-999 {
+	color: #999999;
+}
+
+.col-f7 {
+	color: #f7f7f7;
+}
+
+.col-2e {
+	color: #2e2e2e;
+}
+
+.col-000 {
+	color: #000000;
+}
+
+.col-red {
+	color: #FF0000;
+}
+
+.w-20 {
+	width: 20%;
+}
+
+.w-25 {
+	width: 25%;
+}
+
+.w-30 {
+	width: 30%;
+}
+
+.w-33 {
+	width: 33.3%;
+}
+
+.w-44 {
+	width: 44%;
+}
+
+.w-45 {
+	width: 45.5%;
+}
+
+.w-46 {
+	width: 46%;
+}
+
+.w-47 {
+	width: 47%;
+}
+
+.w-50 {
+	width: 50%;
+}
+
+.w-80 {
+	width: 80%;
+}
+.w-90 {
+	width: 90%;
+}
+
+.w-92 {
+	width: 92%;
+}
+
+.w-94 {
+	width: 94%;
+}
+
+.w-100 {
+	width: 100%;
+}
+
+.h-2 {
+	height: 2rpx;
+}
+
+.h-50 {
+	height: 50rpx;
+}
+
+.h-80 {
+	height: 80rpx;
+}
+
+.h-90 {
+	height: 90rpx;
+}
+
+.h-100 {
+	height: 100rpx;
+}
+
+.h-p100 {
+	height: 100vh;
+}
+
+.h-p90 {
+	height: 90vh;
+}
+
+.h-p83 {
+	height: 83.3vh;
+}
+
+.h-p91 {
+	height: 91vh;
+}
+
+.h-p92 {
+	height: 92vh;
+}
+
+.h-p93 {
+	height: 93vh;
+}
+
+.h-p85 {
+	height: 85vh;
+}
+
+.pd-2030 {
+	padding: 20rpx 30rpx 20rpx 30rpx;
+}
+
+.pd-30 {
+	padding: 30rpx;
+}
+
+.mgt-3 {
+	margin-top: 3rpx;
+}
+
+.mgt-5 {
+	margin-top: 5rpx;
+}
+
+.mgt-8 {
+	margin-top: 8rpx;
+}
+
+.mgt-10 {
+	margin-top: 10rpx;
+}
+
+.mgt-15 {
+	margin-top: 15rpx;
+}
+
+.mgt-20 {
+	margin-top: 20rpx;
+}
+
+.mgt-30 {
+	margin-top: 30rpx;
+}
+
+.mgt-50 {
+	margin-top: 50rpx;
+}
+
+.mgt-100 {
+	margin-top: 100rpx;
+}
+
+.mgt-150 {
+	margin-top: 150rpx;
+}
+.mgt-200 {
+	margin-top: 200rpx;
+}
+
+.mgl-3 {
+	margin-left: 3rpx;
+}
+.mgl-p3 {
+	margin-left: 3%;
+}
+
+.mgl-5 {
+	margin-left: 5rpx;
+}
+
+.mgl-10 {
+	margin-left: 10rpx;
+}
+
+.mgl-15 {
+	margin-left: 15rpx;
+}
+
+.mgl-20 {
+	margin-left: 20rpx;
+}
+
+.mgl-30 {
+	margin-left: 30rpx;
+}
+
+.mgr-3 {
+	margin-right: 3rpx;
+}
+
+.mgr-5 {
+	margin-right: 5rpx;
+}
+
+.mgr-10 {
+	margin-right: 10rpx;
+}
+
+.mgr-15 {
+	margin-right: 10rpx;
+}
+
+.mgr-20 {
+	margin-right: 20rpx;
+}
+
+.mgr-30 {
+	margin-right: 30rpx;
+}
+
+.mgb-3 {
+	margin-bottom: 3rpx;
+}
+
+.mgb-5 {
+	margin-bottom: 5rpx;
+}
+
+.mgb-10 {
+	margin-bottom: 10rpx;
+}
+
+.mgb-20 {
+	margin-bottom: 20rpx;
+}
+
+.mgb-30 {
+	margin-bottom: 30rpx;
+}
+
+.mgb-50 {
+	margin-bottom: 50rpx;
+}
+
+.mgb-100 {
+	margin-bottom: 100rpx;
+}
+
+.f-size18 {
+	font-size: 18rpx;
+}
+
+.f-size21 {
+	font-size: 21rpx;
+}
+
+.f-size24 {
+	font-size: 24rpx;
+}
+
+.f-size26 {
+	font-size: 26rpx;
+}
+
+.f-size28 {
+	font-size: 28rpx;
+}
+
+.f-size30 {
+	font-size: 30rpx;
+}
+
+.f-size32 {
+	font-size: 32rpx;
+}
+
+.f-size34 {
+	font-size: 34rpx;
+}
+
+.f-size34 {
+	font-size: 34rpx;
+}
+
+.f-size36 {
+	font-size: 36rpx;
+}
+
+.f-size40 {
+	font-size: 40rpx;
+}
+
+.f-size50 {
+	font-size: 50rpx;
+}
+
+.f-weight-500 {
+	font-weight: 500;
+}
+
+.f-weight-600 {
+	font-weight: 600;
+}
+
+.f-weight-700 {
+	font-weight: 700;
+}
+
+.br-15{
+	border-radius: 15rpx;
+}
+
+.br-top-15{
+	border-top-right-radius: 15rpx;
+	border-top-left-radius: 15rpx;
+}
+
+.br-50{
+	border-radius: 50%;
+}
+
+.line-h {
+	width: 100%;
+	height: 2rpx;
+	background-color: #EAEAEA;
+}
+
+.btn-commit {
+	width: 80%;
+	height: 80rpx;
+	line-height: 80rpx;
+	text-align: center;
+	color: #ffffff;
+	background: linear-gradient(270.99deg, #01863B 22.06%, #01863B 98.12%);
+	box-shadow: 0px 4px 13px rgba(136, 191, 56, 0.4);
+	border-radius: 40rpx;
+}
+
+.btn-cancel {
+	width: 80%;
+	height: 80rpx;
+	line-height: 80rpx;
+	text-align: center;
+	color: #999;
+	background: #f7f7f7;
+	box-shadow: 0px 4px 13px rgba(136, 191, 56, 0.4);
+	border-radius: 40rpx;
+}
+
+.btn-mark {
+	border-radius: 10rpx;
+	border: 2rpx solid #EAEAEA;
+	padding: 0 15rpx 0 15rpx;
+}
+
+.btn-temp {
+	border-radius: 30rpx;
+	border: 2rpx solid #EAEAEA;
+	padding: 10rpx 30rpx 10rpx 30rpx;
+}
+
+.btn-temp-home {
+	border-radius: 30rpx;
+	border: 2rpx solid #4495D5;
+	padding: 10rpx 30rpx 10rpx 30rpx;
+}
+
+
+.table {
+	width: 100%;
+	height: auto;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+.title {
+	height: 75rpx;
+	white-space: nowrap;
+	display: -webkit-box;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	word-wrap: break-word;
+	white-space: normal !important;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+}
+	
+.line-price {
+	text-decoration: line-through;
+	font-size: 21rpx;
+	color: #999999;
+}
+	
+.center-item {
+	border-radius: 15rpx;
+	background-color: #FFFFFF;
+	box-shadow: 0px 2rpx 8rpx rgba(153, 153, 153, 0.25);
+}
+
+.zan-dialog--show .zan-dialog__container {
+	transform: translateY(0);
+}
+
+.zan-dialog--show .zan-dialog__mask {
+	display: block;
+}
+
+.zan-dialog__mask {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 10;
+	background: rgba(0, 0, 0, 0.4);
+	/*设置阴影半透明背景如： background: rgba(0, 0, 0, 0.4);*/
+	display: none;
+}
+
+.zan-dialog__container {
+	position: fixed;
+	width: 100%;
+	/*弹窗布局宽*/
+	height: auto;
+	/*弹窗布局高，与下面弹出距离transform有关*/
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: #f8f8f8;
+	transform: translateY(300%);
+	/*弹框弹出距离，与弹框布局高度有关，如300%表示弹起距离为3倍弹窗高度 */
+	transition: all 0.4s ease;
+	z-index: 12;
+	border-top-left-radius: 20rpx;
+	border-top-right-radius: 20rpx;
+}

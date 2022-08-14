@@ -71,85 +71,80 @@
 		},
 
 		mounted() {
-			for (var a = [], n = [{
-					name: "1元红包",
-					img: '/static/hb1.png'
-				}, {
-					name: "100元红包",
-					img: '/static/hb1.png'
-				}, {
-					name: "0.5元红包",
-					img: '/static/hb1.png'
-				}, {
-					name: "2元红包",
-					img: '/static/hb1.png'
-				}, {
-					name: "10元红包",
-					img: '/static/hb1.png'
-				}, {
-					name: "50元红包",
-					img: '/static/hb1.png'
-				}, {
-					name: "0.3元红包",
-					img: '/static/hb1.png'
-				}, {
-					name: "5元红包",
-					img: '/static/hb1.png'
-				}], t = [
-					[0, 0],
-					[1, 0],
-					[2, 0],
-					[2, 1],
-					[2, 2],
-					[1, 2],
-					[0, 2],
-					[0, 1]
-				], d = 0; d < 8; d++) {
-				var i = n[d];
-				a.push({
-					name: i.name,
-					index: d,
-					x: t[d][0],
-					y: t[d][1],
-					fonts: [{
-						text: i.name,
-						top: "70%"
-					}],
-					imgs: [{
-						src: i.img,
-						width: "53%",
-						top: "8%"
-					}]
-				});
-			}
-			this.prizes = a
-
 			LuckyApi.getLuckMoney().then(res => {
-				console.log(res);
-			})
-			LuckyApi.openLuck().then(res => {
-				console.log('openLuck',res);
-			})
+				let { num, list } = res.data
+				// 金额备份
+				this.moneyList = list
+				// 未中奖的金额索引集合
+				this.zeroMoneyList = list.map((item,index) => {
+					if(item === 0) return index
+				}).filter(Boolean)
+				// 抽奖次数
+				this.num = num
+				list = list.map(item => {
+					if (!item) return { name: '感谢参与',img: '/static/hb1.png' }
+					return { name: `${item}元红包`, img: '/static/hb1.png' }	
+				})
+				this.prizes = this.handlePrize(list)
+			}).catch(err=>{})
 		},
 
 		methods: {
 			// 点击抽奖按钮触发回调
 			startCallBack() {
-				// 先开始旋转
-				this.$refs.myLucky.play()
-				// 使用定时器来模拟请求接口
-				setTimeout(() => {
-					// 假设后端返回的中奖索引是0
-					const index = 5
-					// 调用stop停止旋转并传递中奖索引
-					this.$refs.myLucky.stop(index)
-				}, 3000)
+				if(this.num <= 0) return this.$toast('抽奖次数不足~')
+				LuckyApi.openLuck().then(res => {
+					const { money } = res.data
+					let prizeIndex = money?this.moneyList.findIndex(item=> item === money):this.zeroMoneyList[Math.floor(Math.random()*this.zeroMoneyList.length)]
+					// 先开始旋转
+					this.$refs.myLucky.play()
+					// 使用定时器来模拟请求接口
+					setTimeout(() => {
+						// 假设后端返回的中奖索引是0
+						const index = prizeIndex
+						this.num = this.num--
+						// 调用stop停止旋转并传递中奖索引
+						this.$refs.myLucky.stop(index)
+					}, 3000)
+				}).catch(err=>{})
 			},
 			// 抽奖结束触发回调
 			endCallBack(prize) {
+				
 				// 奖品详情
-				console.log(prize)
-				this.$toast(prize.name)
+				this.$toast(prize.name==='感谢参与'?prize.name:`恭喜您,抽中了${prize.name}`)
+			},
+			
+			handlePrize(arr) {
+				for (var a = [], n = arr, t = [
+						[0, 0],
+						[1, 0],
+						[2, 0],
+						[2, 1],
+						[2, 2],
+						[1, 2],
+						[0, 2],
+						[0, 1]
+					], d = 0; d < 8; d++) {
+					var i = n[d];
+					a.push({
+						name: i.name,
+						index: d,
+						x: t[d][0],
+						y: t[d][1],
+						fonts: [{
+							text: i.name,
+							top: "70%"
+						}],
+						imgs: [{
+							src: i.img,
+							width: "53%",
+							top: "8%"
+						}]
+					});
+				}
+				
+				return a
 			}
 		}
 	}

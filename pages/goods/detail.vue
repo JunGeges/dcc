@@ -31,13 +31,13 @@
           <text class="twoline-hide">{{ goods.goods_name }}</text>
         </view>
         <!-- #ifdef MP-WEIXIN -->
-        <view class="goods-share__line"></view>
+<!--        <view class="goods-share__line"></view>
         <view class="goods-share">
           <button class="share-btn dis-flex flex-dir-column" open-type="share">
             <text class="share__icon iconfont icon-fenxiang"></text>
             <text class="f-24">分享</text>
           </button>
-        </view>
+        </view> -->
         <!-- #endif -->
       </view>
       <!-- 商品卖点 -->

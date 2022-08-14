@@ -226,6 +226,22 @@
 				"navigationBarTitleText": "银行卡列表"
 			}
 
+		}, {
+			"path": "pages/poster/index",
+			"style": {
+				"navigationBarTitleText": "分享海报",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/withdraw/index",
+			"style": {
+				"navigationBarTitleText": "提现",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#fa2209",
+				"navigationBarTextStyle": "white"
+			}
+
 		}
 	],
 	"subPackages": [{

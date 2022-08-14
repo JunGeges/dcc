@@ -44,10 +44,10 @@
       <view class="asset-left flex-box dis-flex flex-x-around">
         <view class="asset-left-item" @click="onTargetWallet">
           <view class="item-value dis-flex flex-x-center">
-            <text>{{ isLogin ? assets.balance : '--' }}</text>
+            <text>{{ isLogin ? assets.profit : '--' }}</text>
           </view>
           <view class="item-name dis-flex flex-x-center">
-            <text>账户余额</text>
+            <text>我的钱包</text>
           </view>
         </view>
 <!--        <view class="asset-left-item" @click="onTargetPoints">
@@ -67,7 +67,7 @@
           </view>
         </view>
       </view>
-      <view class="asset-right">
+<!--      <view class="asset-right">
         <view class="asset-right-item" @click="onTargetWallet">
           <view class="item-icon dis-flex flex-x-center">
             <text class="iconfont icon-qianbao"></text>
@@ -76,7 +76,7 @@
             <text>我的钱包</text>
           </view>
         </view>
-      </view>
+      </view> -->
     </view>
 
     <!-- 订单操作 -->
@@ -122,7 +122,7 @@
 
     <!-- 退出登录 -->
     <view v-if="isLogin" class="my-logout">
-			<view class="logout-btn share">
+			<view class="logout-btn share" @click="toSharePage">
 			  <text>分享海报</text>
 			</view>
       <view class="logout-btn" @click="handleLogout()">
@@ -336,6 +336,10 @@
             })
         })
       },
+			
+			toSharePage() {
+				this.$navTo('pages/poster/index')
+			},
 
       // 跳转到登录页
       handleLogin() {
@@ -359,7 +363,7 @@
 
       // 跳转到钱包页面
       onTargetWallet() {
-        this.$navTo('pages/wallet/index')
+        this.$navTo('pages/withdraw/index')
       },
 
       // 跳转到订单页

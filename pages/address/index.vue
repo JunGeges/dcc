@@ -250,6 +250,7 @@
       line-height: 48rpx;
 
       .event-item {
+				display: flex;
         font-size: 28rpx;
         margin-right: 26rpx;
         color: #4c4c4c;

@@ -50,20 +50,20 @@
             <text>账户余额</text>
           </view>
         </view>
-        <view class="asset-left-item" @click="onTargetPoints">
+<!--        <view class="asset-left-item" @click="onTargetPoints">
           <view class="item-value dis-flex flex-x-center">
             <text>{{ isLogin ? assets.points : '--' }}</text>
           </view>
           <view class="item-name dis-flex flex-x-center">
             <text>{{ setting[SettingKeyEnum.POINTS.value].points_name }}</text>
           </view>
-        </view>
+        </view> -->
         <view class="asset-left-item" @click="onTargetMyCoupon">
           <view class="item-value dis-flex flex-x-center">
             <text>{{ isLogin ? assets.coupon : '--' }}</text>
           </view>
           <view class="item-name dis-flex flex-x-center">
-            <text>优惠券</text>
+            <text>抽奖券</text>
           </view>
         </view>
       </view>
@@ -122,6 +122,9 @@
 
     <!-- 退出登录 -->
     <view v-if="isLogin" class="my-logout">
+			<view class="logout-btn share">
+			  <text>分享海报</text>
+			</view>
       <view class="logout-btn" @click="handleLogout()">
         <text>退出登录</text>
       </view>
@@ -156,12 +159,13 @@
     { id: 'address', name: '收货地址', icon: 'shouhuodizhi', type: 'link', url: 'pages/address/index' },
     // { id: 'coupon', name: '领券中心', icon: 'lingquan', type: 'link', url: 'pages/coupon/index' },
     // { id: 'myCoupon', name: '优惠券', icon: 'youhuiquan', type: 'link', url: 'pages/my-coupon/index' },
-    { id: 'help', name: '我的帮助', icon: 'bangzhu', type: 'link', url: 'pages/help/index' },
-    { id: 'contact', name: '在线客服', icon: 'kefu', type: 'button', openType: 'contact' },
+    // { id: 'help', name: '我的帮助', icon: 'bangzhu', type: 'link', url: 'pages/help/index' },
+    // { id: 'contact', name: '在线客服', icon: 'kefu', type: 'button', openType: 'contact' },
     // { id: 'points', name: '我的积分', icon: 'jifen', type: 'link', url: 'pages/points/log' },
-    { id: 'refund', name: '退换/售后', icon: 'shouhou', type: 'link', url: 'pages/refund/index', count: 0 },
-    { id: 'lucky', name: '抽奖', icon: 'shouhou', type: 'link', url: 'pages/lucky/index' },
-    { id: 'luckyRecord', name: '我的中奖', icon: 'shouhou', type: 'link', url: 'pages/lucky/luckyRecord' },
+    // { id: 'refund', name: '退换/售后', icon: 'shouhou', type: 'link', url: 'pages/refund/index', count: 0 },
+    { id: 'lucky', name: '抽奖', icon: 'shouhou', type: 'link', url: 'lucky/lucky/index' },
+    { id: 'luckyRecord', name: '我的中奖', icon: 'shouhou', type: 'link', url: 'lucky/lucky/luckyRecord' },
+    { id: 'luckyBig', name: '大奖公告', icon: 'shouhou', type: 'link', url: 'lucky/lucky/prizeList' },
     { id: 'bank', name: '我的银行卡', icon: 'shouhou', type: 'link', url: 'pages/bank/bankList' }
   ]
 
@@ -618,6 +622,7 @@
   // 退出登录
   .my-logout {
     display: flex;
+		flex-flow: column wrap; 
     justify-content: center;
     margin-top: 50rpx;
 
@@ -627,9 +632,16 @@
       font-size: 28rpx;
       color: #616161;
       border-radius: 20rpx;
+			margin-bottom: 30rpx;
       border: 1px solid #dcdcdc;
       padding: 16rpx 0;
       text-align: center;
     }
+		
+		.share {
+			background-color: #fa2209;
+			color: white;
+			border: none;
+		}
   }
 </style>

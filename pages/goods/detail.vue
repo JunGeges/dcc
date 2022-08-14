@@ -109,7 +109,7 @@
           </button>
           <!-- #endif -->
           <!-- 购物车 -->
-          <view class="fast-item fast-item--cart" @click="onTargetCart">
+<!--          <view class="fast-item fast-item--cart" @click="onTargetCart">
             <view v-if="cartTotal > 0" class="fast-badge fast-badge--fixed">{{ cartTotal > 99 ? '99+' : cartTotal }}
             </view>
             <view class="fast-icon">
@@ -118,14 +118,14 @@
             <view class="fast-text">
               <text>购物车</text>
             </view>
-          </view>
+          </view> -->
         </view>
         <!-- 操作按钮 -->
         <view class="foo-item-btn">
           <view class="btn-wrapper">
-            <view class="btn-item btn-item-deputy" @click="onShowSkuPopup(2)">
+<!--            <view class="btn-item btn-item-deputy" @click="onShowSkuPopup(2)">
               <text>加入购物车</text>
-            </view>
+            </view> -->
             <view class="btn-item btn-item-main" @click="onShowSkuPopup(3)">
               <text>立即购买</text>
             </view>

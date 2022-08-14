@@ -15,7 +15,7 @@
       <!-- 轮播图片 -->
       <swiper-item v-for="(item, index) in images" :key="index" @click="onPreviewImages(index)">
         <view class="slide-image">
-          <image class="image" :draggable="false" :src="item.preview_url"></image>
+          <image class="image" :draggable="false" :src="item.preview_url" mode="aspectFill"></image>
         </view>
       </swiper-item>
     </swiper>

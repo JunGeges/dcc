@@ -56,9 +56,9 @@
           <view v-if="item.order_status != OrderStatusEnum.CANCELLED.value" class="order-handle">
             <view class="btn-group clearfix">
               <!-- 未支付取消订单 -->
-              <block v-if="item.pay_status == PayStatusEnum.PENDING.value">
+<!--              <block v-if="item.pay_status == PayStatusEnum.PENDING.value">
                 <view class="btn-item" @click="onCancel(item.order_id)">取消</view>
-              </block>
+              </block> -->
               <!-- 已支付进行中的订单 -->
               <block v-if="item.order_status != OrderStatusEnum.APPLY_CANCEL.value">
                 <block
@@ -107,7 +107,7 @@
           </view>
           <!-- #endif -->
           <!-- 余额支付 -->
-          <view class="pay-item dis-flex flex-x-between" @click="onSelectPayType(PayTypeEnum.BALANCE.value)">
+<!--          <view class="pay-item dis-flex flex-x-between" @click="onSelectPayType(PayTypeEnum.BALANCE.value)">
             <view class="item-left dis-flex flex-y-center">
               <view class="item-left_icon balance">
                 <text class="iconfont icon-balance-pay"></text>
@@ -116,7 +116,7 @@
                 <text>{{ PayTypeEnum.BALANCE.name }}</text>
               </view>
             </view>
-          </view>
+          </view> -->
         </view>
       </view>
     </u-popup>

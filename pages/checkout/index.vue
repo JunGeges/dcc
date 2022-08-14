@@ -134,7 +134,7 @@
       </view>
       <!-- #endif -->
       <!-- 余额支付 -->
-      <view class="pay-item dis-flex flex-x-between" @click="handleSelectPayType(PayTypeEnum.BALANCE.value)">
+<!--      <view class="pay-item dis-flex flex-x-between" @click="handleSelectPayType(PayTypeEnum.BALANCE.value)">
         <view class="item-left dis-flex flex-y-center">
           <view class="item-left_icon balance">
             <text class="iconfont icon-balance-pay"></text>
@@ -149,7 +149,7 @@
         <view class="item-right col-m" v-if="curPayType == PayTypeEnum.BALANCE.value">
           <text class="iconfont icon-check"></text>
         </view>
-      </view>
+      </view> -->
     </view>
 
     <!-- 买家留言 -->
@@ -250,7 +250,7 @@
         // 当前选中的配送方式
         curDelivery: null,
         // 当前选中的支付方式
-        curPayType: PayTypeEnum.BALANCE.value,
+        curPayType: PayTypeEnum.WECHAT.value,
         // 选择的优惠券
         selectCouponId: 0,
         // 是否使用积分抵扣

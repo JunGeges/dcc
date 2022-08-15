@@ -201,7 +201,7 @@
     position: absolute;
     left: 50%;
     transform: translate(-50%);
-    bottom: 200rpx;
+    bottom: 60rpx;
     background: linear-gradient(to bottom, rgba(255, 194, 122), rgba(255, 194, 122, .8));
     box-shadow: 0 5rpx 10rpx #dc415f;
     height: 60rpx;

@@ -1,9 +1,9 @@
 <template>
-  <view class="diy-banner" :style="{ height: `${imgHeights[imgCurrent]}px` }">
+  <view class="diy-banner" style="height: 380rpx ">
     <!-- 图片轮播 -->
     <swiper class="swiper-box" :autoplay="autoplay" :duration="duration" :circular="true" :interval="itemStyle.interval * 1000" @change="_bindChange">
       <swiper-item v-for="(dataItem, index) in dataList" :key="index">
-        <image mode="widthFix" class="slide-image" :src="dataItem.imgUrl" @click="onLink(dataItem.link)" @load="_imagesHeight" />
+        <image mode="aspectFill" class="slide-image" :src="dataItem.imgUrl" @click="onLink(dataItem.link)" @load="_imagesHeight" />
       </swiper-item>
     </swiper>
     <!-- 指示点 -->

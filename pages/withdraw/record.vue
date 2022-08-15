@@ -7,14 +7,16 @@
       <view class="item" v-for="(item, index) in list.data" :key="index">
         <view class="top">
           <view class="tl">
-            <view class="">{{ item.describe }}</view>
+            <!-- <image :src="getBankBg(item.card_name)" mode="widthFix"></image> -->
+            <view class="">{{ item.card_name }}</view>
           </view>
-          <view class="tr">￥{{ item.money }}</view>
+          <view class="tr">￥{{ item.earnings }}</view>
         </view>
         <view class="mid">
+          <view class="">{{ item.desc }}</view>
           <view class="">{{ item.create_time }}</view>
         </view>
-<!--        <view class="bottom">
+        <view class="bottom">
           <view class="bi">
             <text>实际到账</text>
             <text>￥{{ item.fee }}</text>
@@ -23,7 +25,7 @@
             <text>手续费</text>
             <text>￥{{ item.service_fee }}</text>
           </view>
-        </view> -->
+        </view>
       </view>
     </mescroll-body>
   </view>
@@ -37,6 +39,7 @@
     checkLogin
   } from '@/core/app'
   import * as UserApi from '@/api/user'
+  import { getBankBg } from '@/utils/bankUtils'
 
   const pageSize = 15
   export default {
@@ -70,6 +73,10 @@
 
     methods: {
 
+      getBankBg(name) {
+        return getBankBg(name)
+      },
+
       /**
        * 上拉加载的回调 (页面初始化时也会执行一次)
        * 其中page.num:当前页 从1开始, page.size:每页数据条数,默认10
@@ -90,7 +97,7 @@
       getWithdrawList(pageNo = 1) {
         const app = this
         return new Promise((resolve, reject) => {
-          UserApi.myLuckRecord({ page: pageNo }, { load: false })
+          UserApi.withdrawRecord({ page: pageNo }, { load: false })
             .then(result => {
               // 合并新数据
               const newList = result.data.list
@@ -146,7 +153,6 @@
         .tr {
           font-weight: 600;
           font-size: 32rpx;
-          color: #fa2209;
         }
       }
 

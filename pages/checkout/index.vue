@@ -134,7 +134,7 @@
       </view>
       <!-- #endif -->
       <!-- 余额支付 -->
-     <view class="pay-item dis-flex flex-x-between" @click="handleSelectPayType(PayTypeEnum.BALANCE.value)">
+      <view class="pay-item dis-flex flex-x-between" @click="handleSelectPayType(PayTypeEnum.BALANCE.value)">
         <view class="item-left dis-flex flex-y-center">
           <view class="item-left_icon balance">
             <text class="iconfont icon-balance-pay"></text>
@@ -475,7 +475,7 @@
       // 跳转到我的订单(等待1秒)
       navToMyOrder() {
         setTimeout(() => {
-          this.$navTo('pages/order/index')
+          this.$navTo('pages/order/index', {}, 'redirectTo')
         }, 1000)
       },
 

@@ -109,6 +109,9 @@
 		},
 
 		methods: {
+      toRecord() {
+        this.$navTo('pages/withdraw/record')
+      },
 			assets() {
 				UserApi.assets().then(res => {
 					this.priceInfo = res.data.assets
@@ -152,6 +155,10 @@
 				}
 				if (!this.bankData.bank_id) {
 					this.$toast('请选择收款账户')
+          this.timer =setTimeout(()=>{
+            clearTimeout(this.timer)
+            this.selectBank()
+          },500)
 					return
 				}
 
@@ -166,7 +173,7 @@
 					this.timer = setTimeout(() => {
 						clearTimeout(this.timer)
 						uni.navigateBack({})
-					})
+					},500)
 					if (res.status == 200) {
 						this.param.money = ''
 						this.assets()

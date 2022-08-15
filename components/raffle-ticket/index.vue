@@ -2,11 +2,11 @@
   <view class="ticket-container">
     <view class="ticket-box">
       <view class="left">
-        <view>奖券编号：NO.1546</view>
+        <view>奖券编号：{{ ticket.order_no }}</view>
         <view>抽奖券</view>
       </view>
       <view class="right">
-        <view>去抽奖</view>
+        <view :style="ticket.is_use?'opacity:.4':''" @click="goLucky">{{ ticket.is_use?'已使用':'去抽奖' }}</view>
       </view>
     </view>
   </view>
@@ -15,7 +15,14 @@
 
 <script>
   export default {
-    name: 'RaffleTicket'
+    name: 'RaffleTicket',
+    props: ['ticket'],
+    methods: {
+      goLucky() {
+        if (this.ticket.is_use) return
+        this.$navTo('lucky/lucky/index', { code: this.ticket.order_no })
+      }
+    }
   }
 </script>
 
@@ -34,7 +41,7 @@
 
       .left {
         position: relative;
-        background: #2A95B0;
+        background: #fa2209;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -70,7 +77,7 @@
         view {
           height: 40rpx;
           text-align: center;
-          background-color: #2A95B0;
+          background-color: #fa2209;
           border-radius: 30rpx;
           line-height: 40rpx;
           color: white;

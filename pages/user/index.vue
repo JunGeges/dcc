@@ -58,7 +58,7 @@
             <text>{{ setting[SettingKeyEnum.POINTS.value].points_name }}</text>
           </view>
         </view> -->
-        <view class="asset-left-item" @click="onTargetMyCoupon">
+        <view class="asset-left-item" @click="onTargetPrizeTicket">
           <view class="item-value dis-flex flex-x-center">
             <text>{{ isLogin ? assets.coupon : '--' }}</text>
           </view>
@@ -100,7 +100,8 @@
         <block v-for="(item, index) in service" :key="index">
           <view v-if="item.type == 'link'" class="service-item" @click="handleService(item)">
             <view class="item-icon">
-              <text class="iconfont" :class="[`icon-${item.icon}`]"></text>
+              <text v-if="!item.flag" class="iconfont" :class="[`icon-${item.icon}`]"></text>
+              <text v-else class="iconfont2" :class="[`icon-${item.icon}`]"></text>
             </view>
             <view class="item-name">{{ item.name }}</view>
             <view class="item-badge" v-if="item.count && item.count > 0">
@@ -111,7 +112,8 @@
           <view v-if="item.type == 'button' && platform == 'MP-WEIXIN'" class="service-item">
             <button class="btn-normal" :open-type="item.openType">
               <view class="item-icon">
-                <text class="iconfont" :class="[`icon-${item.icon}`]"></text>
+                <text v-if="!item.flag" class="iconfont" :class="[`icon-${item.icon}`]"></text>
+                <text v-else class="iconfont2" :class="[`icon-${item.icon}`]"></text>
               </view>
               <view class="item-name">{{ item.name }}</view>
             </button>
@@ -156,6 +158,9 @@
    * id: 标识; name: 标题名称; icon: 图标; type 类型(link和button); url: 跳转的链接
    */
   const service = [
+    { id: 'lucky', name: '抽奖', icon: 'choujiang', type: 'link', url: 'lucky/lucky/index',flag: 'iconfont2'  },
+    { id: 'luckyRecord', name: '我的中奖', icon: 'zhongjiangjilu', type: 'link', url: 'lucky/lucky/luckyRecord',flag: 'iconfont2'  },
+    { id: 'luckyBig', name: '大奖公告', icon: 'jiangchenggongshi', type: 'link', url: 'lucky/lucky/prizeList',flag: 'iconfont2'  },
     { id: 'address', name: '收货地址', icon: 'shouhuodizhi', type: 'link', url: 'pages/address/index' },
     // { id: 'coupon', name: '领券中心', icon: 'lingquan', type: 'link', url: 'pages/coupon/index' },
     // { id: 'myCoupon', name: '优惠券', icon: 'youhuiquan', type: 'link', url: 'pages/my-coupon/index' },
@@ -163,10 +168,7 @@
     // { id: 'contact', name: '在线客服', icon: 'kefu', type: 'button', openType: 'contact' },
     // { id: 'points', name: '我的积分', icon: 'jifen', type: 'link', url: 'pages/points/log' },
     // { id: 'refund', name: '退换/售后', icon: 'shouhou', type: 'link', url: 'pages/refund/index', count: 0 },
-    { id: 'lucky', name: '抽奖', icon: 'shouhou', type: 'link', url: 'lucky/lucky/index' },
-    { id: 'luckyRecord', name: '我的中奖', icon: 'shouhou', type: 'link', url: 'lucky/lucky/luckyRecord' },
-    { id: 'luckyBig', name: '大奖公告', icon: 'shouhou', type: 'link', url: 'lucky/lucky/prizeList' },
-    { id: 'bank', name: '我的银行卡', icon: 'shouhou', type: 'link', url: 'pages/bank/bankList' }
+    { id: 'bank', name: '我的银行卡', icon: 'yinhangka', type: 'link', url: 'pages/bank/bankList',flag: 'iconfont2'  }
   ]
 
   export default {
@@ -359,6 +361,11 @@
             }
           }
         })
+      },
+      
+      // 跳转我的抽奖券
+      onTargetPrizeTicket() {
+        this.$navTo('pages/prize-ticket/index')
       },
 
       // 跳转到钱包页面

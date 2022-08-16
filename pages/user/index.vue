@@ -60,7 +60,7 @@
         </view> -->
         <view class="asset-left-item" @click="onTargetPrizeTicket">
           <view class="item-value dis-flex flex-x-center">
-            <text>{{ isLogin ? assets.coupon : '--' }}</text>
+            <text>{{ isLogin ? assets.luck : '--' }}</text>
           </view>
           <view class="item-name dis-flex flex-x-center">
             <text>抽奖券</text>

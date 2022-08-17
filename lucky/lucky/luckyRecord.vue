@@ -33,9 +33,6 @@
   import MescrollBody from '@/components/mescroll-uni/mescroll-body.vue'
   import MescrollMixin from '@/components/mescroll-uni/mescroll-mixins'
   import { getEmptyPaginateObj, getMoreListData } from '@/core/app'
-  import {
-    checkLogin
-  } from '@/core/app'
   import * as UserApi from '@/api/user'
 
   const pageSize = 15

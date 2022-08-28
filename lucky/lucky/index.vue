@@ -100,7 +100,9 @@
       startCallBack() {
         if (this.num <= 0) return this.$toast('抽奖次数不足~')
         LuckyApi.openLuck({ code: this.code }).then(res => {
+					if(res.status !== 200) return this.$toast(res.message)
           const { money } = res.data
+					this.code = 0
           let prizeIndex = money ? this.moneyList.findIndex(item => item === money) : this.zeroMoneyList[Math.floor(
             Math.random() * this.zeroMoneyList.length)]
           // 先开始旋转

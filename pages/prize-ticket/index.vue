@@ -63,6 +63,10 @@
     onLoad(options) {
 
     },
+		
+		onShow() {
+			this.getGroupList()
+		},
 
     methods: {
 

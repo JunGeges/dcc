@@ -2,6 +2,8 @@
   <view class="container">
     <!-- 店铺页面组件 -->
     <Page :items="items" />
+    <!-- 公众号关注组件 -->
+    <official-account></official-account>
   </view>
 </template>
 

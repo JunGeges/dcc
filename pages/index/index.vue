@@ -11,6 +11,9 @@
   import { setCartTabBadge } from '@/core/app'
   import * as Api from '@/api/page'
   import Page from '@/components/page'
+	import {
+		checkLogin
+	} from '@/core/app'
 
   const App = getApp()
 
@@ -37,6 +40,10 @@
       this.options = options
       // 加载页面数据
       this.getPageData();
+			if(this.options.scene){
+				let pid = this.options.scene
+				uni.setStorageSync('spreadId', pid);
+			}
     },
 
     /**
@@ -45,9 +52,23 @@
     onShow() {
       // 更新购物车角标
       setCartTabBadge()
+			this.isLogin = checkLogin()
+			let pid = uni.getStorageSync('spreadId');
+			if(pid && this.isLogin){
+				this.bindUser(pid);
+				uni.removeStorageSync('spreadId');
+			}
     },
 
     methods: {
+			bindUser(id){
+				const app = this
+				Api.bindUser({pid:id}).then( result => {
+					console.log(result)
+				}).catch(err => {
+					
+				})
+			},
 
       /**
        * 加载页面数据

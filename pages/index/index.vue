@@ -3,7 +3,7 @@
     <!-- 店铺页面组件 -->
     <Page :items="items" />
     <!-- 公众号关注组件 -->
-    <official-account></official-account>
+    <official-account class="gzh"></official-account>
   </view>
 </template>
 
@@ -151,5 +151,13 @@
 <style lang="scss" scoped>
   .container {
     background: #fff;
+		padding-bottom: 200rpx;
+		box-sizing: border-box;
   }
+	.gzh {
+		position: fixed;
+		left: 0;
+		bottom: 0;
+		width: 100vw;
+	}
 </style>

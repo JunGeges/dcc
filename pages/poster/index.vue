@@ -126,9 +126,10 @@
 				console.log(systemInfo)
 			
 				let goodsImg = await this.getImageInfo(bg)
+        // console.log(goodsImg);
 				let codeInfo = await this.getImageInfo(code)
-				
-				this.canvasH = systemInfo.windowHeight;//goodsImg.height + codeInfo.height + 50;  // 画布高度 = 主图高度+二维码高度 + 文字图片的间距（大概50）
+				console.log('codeinfo',codeInfo,375-codeInfo/2,codeInfo/2)
+				this.canvasH = systemInfo.windowHeight/1.5;//goodsImg.height + codeInfo.height + 50;  // 画布高度 = 主图高度+二维码高度 + 文字图片的间距（大概50）
 				this.canvasW = systemInfo.windowWidth;
 				
 				const ctx = uni.createCanvasContext('myCanvas',this);
@@ -146,9 +147,9 @@
 				ctx.fillRect(0, 0, this.canvasW, this.canvasH);
 							
 				//ctx.drawImage(goodsImg.path, 0, 0, this.canvasW, this.canvasH-codeInfo.height+100) // drawImage(图片路径,x,y,绘制图像的宽度，绘制图像的高度)
-				//ctx.drawImage(codeInfo.path, this.canvasW-180, this.canvasH-codeInfo.height+110, codeInfo.width-200, codeInfo.height-200) // drawImage(图片路径,x,y,绘制图像的宽度，绘制图像的高度,二维码的宽,高)
-				ctx.drawImage(goodsImg.path, 0, 0, this.canvasW, this.canvasH * goodsy) // drawImage(图片路径,x,y,绘制图像的宽度，绘制图像的高度)
-				ctx.drawImage(codeInfo.path, this.canvasW * codex, this.canvasH * codey, this.canvasW * codeSize, this.canvasW * codeSize) // drawImage(图片路径,x,y,绘制图像的宽度，绘制图像的高度,二维码的宽,高)
+				// ctx.drawImage(codeInfo.path, this.canvasW-180, this.canvasH-codeInfo.height+110, codeInfo.width-200, codeInfo.height-200) // drawImage(图片路径,x,y,绘制图像的宽度，绘制图像的高度,二维码的宽,高)
+				// ctx.drawImage(goodsImg.path, 0, 0, this.canvasW, this.canvasH * goodsy) // drawImage(图片路径,x,y,绘制图像的宽度，绘制图像的高度)
+				ctx.drawImage(codeInfo.path, this.canvasW/2-codeInfo.width/2, 40, this.canvasW/2, this.canvasW/2) // drawImage(图片路径,x,y,绘制图像的宽度，绘制图像的高度,二维码的宽,高)
 				
 				// 5、邀请信息
 				if (this.canvasW < 270) {
@@ -157,7 +158,8 @@
 					ctx.setFontSize(14);
 				}
 				ctx.setFillStyle('#333')
-				ctx.fillText(this.spreadList.nickname+''+this.spreadList.mark, 15, this.canvasH * namey);
+        ctx.setTextAlign('center')
+				ctx.fillText(this.spreadList.nickname+''+this.spreadList.mark,187.5, this.canvasH * namey+50);
 				
 				if (this.canvasW < 270) {
 					ctx.setFontSize(12);
@@ -165,7 +167,8 @@
 					ctx.setFontSize(14);
 				}
 				ctx.setFillStyle('#b8b8b8')
-				ctx.fillText('长按或扫描识别二维码', 15, this.canvasH * marky);
+        ctx.setTextAlign('center')
+				ctx.fillText('长按或扫描识别二维码', 187.5, this.canvasH * marky+80);
 				
 				ctx.draw(true,(ret)=>{ // draw方法 把以上内容画到 canvas 中。
 					console.log(ret) 

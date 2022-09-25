@@ -262,6 +262,13 @@
 				"enablePullDownRefresh": false
 			}
 
+		}, {
+			"path": "pages/team/index",
+			"style": {
+				"navigationBarTitleText": "我的好友",
+				"enablePullDownRefresh": false
+			}
+
 		}
 	],
 	"subPackages": [{

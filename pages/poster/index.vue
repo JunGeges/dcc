@@ -150,7 +150,7 @@
 				//ctx.drawImage(goodsImg.path, 0, 0, this.canvasW, this.canvasH-codeInfo.height+100) // drawImage(图片路径,x,y,绘制图像的宽度，绘制图像的高度)
 				// ctx.drawImage(codeInfo.path, this.canvasW-180, this.canvasH-codeInfo.height+110, codeInfo.width-200, codeInfo.height-200) // drawImage(图片路径,x,y,绘制图像的宽度，绘制图像的高度,二维码的宽,高)
 				// ctx.drawImage(goodsImg.path, 0, 0, this.canvasW, this.canvasH * goodsy) // drawImage(图片路径,x,y,绘制图像的宽度，绘制图像的高度)
-				ctx.drawImage(codeInfo.path, 0, 50, this.canvasW*0.95, this.canvasW*0.95) // drawImage(图片路径,x,y,绘制图像的宽度，绘制图像的高度,二维码的宽,高)
+				ctx.drawImage(codeInfo.path,20, this.canvasW*0.8 -150 , this.canvasW*0.8, this.canvasW*0.8) // drawImage(图片路径,x,y,绘制图像的宽度，绘制图像的高度,二维码的宽,高)
 				
 				// 5、邀请信息
 				if (this.canvasW < 270) {
@@ -160,7 +160,7 @@
 				}
 				ctx.setFillStyle('#333')
         ctx.setTextAlign('center')
-				ctx.fillText(this.spreadList.nickname+''+this.spreadList.mark,170, this.canvasH * namey+30);
+				ctx.fillText(this.spreadList.nickname+''+this.spreadList.mark,170, this.canvasW +130);
 				
 				if (this.canvasW < 270) {
 					ctx.setFontSize(12);
@@ -169,7 +169,7 @@
 				}
 				ctx.setFillStyle('#b8b8b8')
         ctx.setTextAlign('center')
-				ctx.fillText('长按或扫描识别二维码', 170, this.canvasH * marky+40);
+				ctx.fillText('长按或扫描识别二维码', 170,  this.canvasW +160);
 				
 				ctx.draw(true,(ret)=>{ // draw方法 把以上内容画到 canvas 中。
 					console.log(ret) 
@@ -296,7 +296,7 @@
 
 			.user-code {
 				width: 100%;
-				// height: 100%;
+				 height: 100%;
 				display: flex;
 				align-items: center;
 				justify-content: center;
@@ -310,14 +310,14 @@
 	}
 
 	.img-list {
-		margin-right: 40px;
+		margin-right: 100px;
 	}
 
 	.distribution-posters swiper {
 		width: 100%;
 		height: 1000rpx;
 		position: relative;
-		margin-top: 40rpx;
+		margin-top: 100rpx;
 	}
 
 	.distribution-posters .slide-image {

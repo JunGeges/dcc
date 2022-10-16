@@ -10,6 +10,11 @@
 			"selectedIconPath": "static/tabbar/home-active.png",
 			"text": "首页"
 		}, {
+			"pagePath": "pages/merchants/index",
+			"iconPath": "static/tabbar/home.png",
+			"selectedIconPath": "static/tabbar/home-active.png",
+			"text": "邦泰之家"
+		}, {
 			"pagePath": "pages/user/index",
 			"iconPath": "static/tabbar/user.png",
 			"selectedIconPath": "static/tabbar/user-active.png",
@@ -41,6 +46,13 @@
 				"navigationBarTitleText": "个人中心",
 				"enablePullDownRefresh": true,
 				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/merchants/index",
+			"style": {
+				"navigationBarTitleText": "邦泰之家",
+				"enablePullDownRefresh": true
 			}
 		},
 		{
@@ -270,7 +282,16 @@
 			}
 
 		}
-	],
+	    ,{
+            "path" : "pages/merchants/merchantsEnter",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"subPackages": [{
 		"root": "lucky",
 		"pages": [{
@@ -309,6 +330,9 @@
 	"condition": {
 		"current": 0,
 		"list": [{
+			"name": "邦泰之家",
+			"path": "pages/merchants/index"
+		}, {
 			"name": "中奖记录",
 			"path": "lucky/lucky/luckyRecord"
 		}, {

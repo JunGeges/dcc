@@ -58,6 +58,7 @@
 <style lang="scss">
   /* 引入uView库样式 */
   @import "uview-ui/index.scss";
+  @import "/wxcomponents/vant/common/index.wxss";
 </style>
 
 <style>

@@ -114,6 +114,7 @@ export const navTo = (url, query = {}, modo = 'navigateTo') => {
   modo === 'redirectTo' && uni.redirectTo({
     url: `/${url}${queryStr}`
   })
+  console.log('url',url);
   return true
 }
 

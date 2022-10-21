@@ -1,19 +1,19 @@
 <template>
   <view class="list-container">
-    <view class="goods-item">
+    <view class="goods-item" v-for="item,index in goodsList" :key="index">
       <view class="goods-box">
-        <image src="../../static/6231189fbb513655.jfif" mode="aspectFit"></image>
+        <image :src="item.goods_image" mode="aspectFit"></image>
         <view class="goods-info">
-          <view class="">圆角正方形三件套</view>
+          <view class="">{{ item.goods_name }}</view>
           <view class="price-box">
-            <view class="price">￥200</view>
-            <view class="o-price">￥300</view>
+            <view class="price">￥{{ item.goods_price }}</view>
+            <view class="o-price">￥{{ item.line_price }}</view>
           </view>
         </view>
       </view>
       <view class="edit-btns">
-        <view @click="toGoodsDetail">查看详情</view>
-        <view @click="toEditGoods">编辑</view>
+        <view @click="toGoodsDetail(item)">查看详情</view>
+        <view @click="toEditGoods(item)">编辑</view>
       </view>
     </view>
   </view>
@@ -21,21 +21,36 @@
 
 <script>
   import { navTo } from '@/core/app'
+  import * as MerchantsApi from '@/api/merchants'
   export default {
     data() {
       return {
-
+        goodsList: []
       }
     },
+
+    onLoad(options) {
+      this.form = { shop_id: options.store_shop_id }
+
+    },
+
+    onShow() {
+      MerchantsApi.goodsList(this.form).then(res => {
+        this.goodsList = res.data.list
+      })
+    },
+
     methods: {
       // 查看商品详情
-      toGoodsDetail() {
-        navTo('pages/merchants/goodsDetail')
+      toGoodsDetail(goods) {
+        const { goods_id } = goods
+        navTo('pages/merchants/goodsDetail', { goods_id })
       },
 
       // 编辑商品
-      toEditGoods() {
-        navTo('pages/merchants/goodsEnter', { flag: 1 })
+      toEditGoods(goods) {
+        const { goods_id } = goods
+        navTo('pages/merchants/goodsEnter', { flag: 1, goods_id })
       }
     }
   }

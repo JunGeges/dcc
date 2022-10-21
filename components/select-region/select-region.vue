@@ -6,7 +6,8 @@
     <view v-else class="field-body" @click="handleSelect()">
       <view class="field-value oneline-hide">{{ valueText ? valueText: placeholder }}</view>
     </view>
-    <u-select v-model="show" mode="mutil-column-auto" :list="options" :default-value="defaultValue" @confirm="onConfirm"></u-select>
+    <u-select v-model="show" mode="mutil-column-auto" :list="options" :default-value="defaultValue"
+      @confirm="onConfirm"></u-select>
   </view>
 </template>
 
@@ -43,6 +44,7 @@
           return []
         }
       },
+
       // 未选中时的提示文字
       placeholder: {
         type: String,
@@ -66,6 +68,7 @@
     watch: {
       // 监听v-model
       value(val) {
+        console.log('val', val)
         // 设置默认选中的值
         this.valueText = val.map(item => item.label).join('/')
         this.setDefaultValue(val)
@@ -139,10 +142,25 @@
 
       // 获取子集地区
       getChildren(item) {
-        if (item.city) {
+        if (item.city) {          
+          item.city[0] = {
+            id: -1,
+            level: 2,
+            name: "全部",
+            pid: 0,
+            region:[]
+          }
           return item.city
         }
         if (item.region) {
+          //console.log(item.region)
+          item.region[0] = {
+            id: -1,
+            level: 3,
+            name: "全部",
+            pid: 0
+            
+          }
           return item.region
         }
         return false

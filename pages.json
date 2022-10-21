@@ -284,7 +284,7 @@
     }, {
       "path": "pages/merchants/merchantsEnter",
       "style": {
-        "navigationBarTitleText": "商户入驻",
+        "navigationBarTitleText": "",
         "enablePullDownRefresh": false
       }
 
@@ -410,7 +410,8 @@
       "van-cell-group": "wxcomponents/vant/cell-group/index",
       "van-cell": "wxcomponents/vant/cell/index",
       "van-field": "wxcomponents/vant/field/index",
-      "van-area": "wxcomponents/vant/area/index"
+      "van-area": "wxcomponents/vant/area/index",
+      "van-action-sheet ": "wxcomponents/vant/action-sheet/index"
     }
   },
   "easycom": {

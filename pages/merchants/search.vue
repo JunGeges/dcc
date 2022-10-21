@@ -1,36 +1,109 @@
 <template>
   <view class="search-container">
-    <uni-nav-bar>
-      <view class="input-view">
-        <uni-icons class="input-uni-icon" type="search" size="18" color="#999" />
-        <input confirm-type="search" class="nav-bar-input" type="text" placeholder="输入搜索关键词" @confirm="confirm" />
-      </view>
-      <block slot="right">
-        <view class="city">
-          搜索
-        </view>
-      </block>
-    </uni-nav-bar>
-    <view class="shop-box">
-      <view class="shop-item" v-for="item in 4">
-        <image src="../../static/6231189fbb513655.jfif" mode="aspectFit"></image>
-        <view class="shop-info">
-          <view class="shop-title">包图小店</view>
-        </view>
-      </view>
+    <view class="search-box">
+      <u-search placeholder="搜索" :clearabled="true" v-model="keyword" @search="commitSearch" @custom="commitSearch">
+      </u-search>
     </view>
+    <mescroll-body ref="mescrollRef" :sticky="true" @init="mescrollInit" :down="{ native: true,auto:false }"
+      @down="downCallback" :up="upOption" @up="upCallback">
+      <view class="shop-box" v-if="list.data.length>0">
+        <view class="shop-item" v-for="item,index in list.data" :key="index" @click="toShopDetail(item.store_shop_id)">
+          <image :src="item.logo_image" mode="aspectFit"></image>
+          <view class="shop-info">
+            <view class="shop-title">{{ item.store_name }}</view>
+            <view class="shop-desc">{{ item.store_info}}</view>
+            <view class="shop-address">
+              <van-icon name="location-o" />
+              {{ item.regions }}
+            </view>
+          </view>
+        </view>
+      </view>
+    </mescroll-body>
   </view>
 </template>
 
+
 <script>
+  import * as MerchantsApi from '@/api/merchants'
+  import MescrollBody from '@/components/mescroll-uni/mescroll-body'
+  import MescrollMixin from '@/components/mescroll-uni/mescroll-mixins'
+  import { getEmptyPaginateObj, getMoreListData } from '@/core/app'
+  // 每页记录数量
+  const pageSize = 15
+
   export default {
     data() {
       return {
-
+        keyword: '',
+        list: getEmptyPaginateObj(),
+        // 上拉加载配置
+        upOption: {
+          // 首次自动执行
+          auto: false,
+          // 每页数据的数量; 默认10
+          page: { size: pageSize },
+          // 数量要大于4条才显示无更多数据
+          noMoreSize: 4,
+          // 空布局
+          empty: {
+            tip: '亲，暂无数据'
+          }
+        }
       }
     },
+
+    mixins: [MescrollMixin],
+
+    components: {
+      MescrollBody
+    },
+
+
     methods: {
 
+      /**
+       * 上拉加载的回调 (页面初始化时也会执行一次)
+       * 其中page.num:当前页 从1开始, page.size:每页数据条数,默认10
+       * @param {Object} page
+       */
+      upCallback(page) {
+        console.log('upcallback');
+        const app = this
+        // 设置列表数据
+        app.getShopList(page.num)
+          .then(list => {
+            const curPageLen = list.data.length
+            const totalSize = list.data.total
+            app.mescroll.endBySize(curPageLen, totalSize)
+          })
+          .catch(() => app.mescroll.endErr())
+      },
+
+      // 获取店铺列表
+      getShopList(pageNo = 1) {
+        const app = this
+        return new Promise((resolve, reject) => {
+          MerchantsApi.getList({ keyword: app.keyword, page: pageNo })
+            .then(result => {
+              // 合并新数据
+              const newList = result.data.list
+              app.list.data = getMoreListData(newList, app.list, pageNo)
+              resolve(newList)
+            })
+        })
+      },
+
+      toShopDetail(shopid) {
+        this.$navTo('pages/merchants/home', { shore_shop_id: shopid })
+      },
+
+      // 搜索关键词
+      commitSearch() {
+        if (!this.keyword) return this.$toast('搜点什么吧~')
+
+        this.getShopList()
+      },
     }
   }
 </script>
@@ -39,11 +112,15 @@
   $nav-height: 30px;
 
   .search-container {
+
+    .search-box {
+      padding: 30rpx;
+      box-sizing: border-box;
+    }
+
     .shop-box {
-      display: flex;
-      justify-content: space-around;
-      flex-wrap: wrap;
       margin-top: 30rpx;
+
 
       .shop-item {
         // width: 50%; 
@@ -53,21 +130,40 @@
         box-shadow: 0 0 10rpx #efefef;
         border-radius: 10rpx;
         margin-bottom: 30rpx;
+        display: flex;
+        width: 90%;
+        margin-left: 5%;
 
         image {
-          width: 300rpx;
-          height: 300rpx;
-          border-radius: 10rpx 10rpx 0 0;
+          width: 200rpx;
+          height: 200rpx;
+          border-radius: 10rpx 0 0 10rpx;
+          margin-right: 20rpx;
         }
 
         .shop-info {
-          padding: 20rpx 0;
+          padding: 20rpx 10rpx;
           box-sizing: border-box;
           width: 300rpx;
+          flex: 1;
 
           .shop-title {
             font-size: 30rpx;
             color: #343434;
+          }
+
+          .shop-desc {
+            margin: 15rpx 0;
+            overflow : hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            font-size: 28rpx;
+          }
+          
+          .shop-address {
+            color: #a5a5a5;
           }
         }
 

@@ -15,7 +15,7 @@
           <select-region v-model="form.region" />
         </u-form-item>
         <u-form-item label="详细地址" prop="detail" :border-bottom="false">
-          <u-input v-model="form.detail" placeholder="街道门牌、楼层等信息" />
+          <u-input v-model="form.detail" placeholder="乡镇(街道/管理处)门牌、楼层等信息" />
         </u-form-item>
       </u-form>
     </view>
@@ -70,7 +70,7 @@
     }],
     detail: [{
       required: true,
-      message: '请输入详细地址',
+      message: '请输入详细地址 如：乡镇(街道/管理处)门牌、楼层等信息',
       trigger: ['blur', 'change']
     }],
   }

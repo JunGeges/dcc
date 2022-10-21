@@ -54,7 +54,7 @@
 				bank_id:'',
 				bankInfo:{
 					user_name:'请输入真实姓名',
-					bank_name:'请输入银行名称',
+					bank_name:'请输入银行及支行名称',
 					card_no:'请输入银行卡号',
 					phone:'请输入银行绑定手机号',
 				},

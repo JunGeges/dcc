@@ -146,6 +146,7 @@
   import * as UserApi from '@/api/user'
   import * as OrderApi from '@/api/order'
   import { checkLogin } from '@/core/app'
+  import { userInfo } from 'os'
 
   // 订单操作
   const orderNavbar = [
@@ -186,14 +187,6 @@
     // { id: 'contact', name: '在线客服', icon: 'kefu', type: 'button', openType: 'contact' },
     // { id: 'points', name: '我的积分', icon: 'jifen', type: 'link', url: 'pages/points/log' },
     // { id: 'refund', name: '退换/售后', icon: 'shouhou', type: 'link', url: 'pages/refund/index', count: 0 },
-    {
-      id: 'shop',
-      name: '店铺入驻',
-      icon: 'dianpu',
-      type: 'link',
-      url: 'pages/merchants/merChantsEnter',
-      flag: 'iconfont3'
-    },
     { id: 'bank', name: '我的银行卡', icon: 'yinhangka', type: 'link', url: 'pages/bank/bankList', flag: 'iconfont2' },
     { id: 'questionnaire', name: '问卷调查', icon: 'qpdingdan', type: 'link', url: 'pages/questionnaire/index' }
   ]
@@ -257,6 +250,8 @@
             app.initService()
             // 初始化订单操作数据
             app.initOrderTabbar()
+            // 判断是否有店铺
+            app.hasShop(app.userInfo)
             // 执行回调函数
             callback && callback()
           })
@@ -278,6 +273,16 @@
           }
           newService.push(item)
         })
+        if (app.userInfo.is_open) {
+          newService.push({
+            id: 'shop',
+            name: '店铺入驻',
+            icon: 'dianpu',
+            type: 'link',
+            url: 'pages/merchants/merchantsEnter',
+            flag: 'iconfont3'
+          }, )
+        }
         app.service = newService
       },
 
@@ -324,6 +329,19 @@
               }
             })
         })
+      },
+
+      // 判断是否拥有店铺了
+      hasShop(userInfo) {
+        const { is_shop } = userInfo
+        const service = this.service
+        if (is_shop) {
+          service.forEach((item, index) => {
+            if (item.id === 'shop') {
+              item.name = '我的店铺'
+            }
+          })
+        }
       },
 
       // 获取账户资产
@@ -416,7 +434,10 @@
       },
 
       // 跳转到服务页面
-      handleService({ url }) {
+      handleService({ url, id }) {
+        if (id == "shop") {
+          url = this.userInfo.is_shop === 0 ? 'pages/merchants/merchantsEnter' : 'pages/merchants/myMerchants'
+        }
         this.$navTo(url)
       },
 

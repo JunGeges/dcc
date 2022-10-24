@@ -1,21 +1,24 @@
 <template>
   <view class="home-conatiner">
-    <mescroll-body ref="mescrollRef" :sticky="true" @init="mescrollInit" :down="{ native: true,use:true }"
-      @down="downCallback" :up="upOption" @up="upCallback">
-      <view class="search-box">
-        <view class="city">
-          <view>
-            <select-region v-model="region" placeholder="全国" @change="getSelectArea" />
-          </view>
-          <uni-icons type="arrowdown" color="#666" size="18" />
+
+    <view class="search-box">
+      <view class="city">
+        <view>
+          <select-region v-model="region" placeholder="全国" @change="getSelectArea" />
         </view>
-        <u-search placeholder="搜索" disabled :show-action="false" @click="toSearch">
-        </u-search>
+        <uni-icons type="arrowdown" color="#666" size="18" />
       </view>
-      <u-sticky bgColor="#fff">
-        <u-tabs :list="cateList" :is-scroll="false" active-color="#fa2209" :current="currentCateIndex"
-          @change="getCateId"></u-tabs>
-      </u-sticky>
+      <u-search placeholder="搜索" disabled :show-action="false" @click="toSearch">
+      </u-search>
+    </view>
+
+    <mescroll-body ref="mescrollRef" @init="mescrollInit" :down="{ native: true,use:true }" @down="downCallback"
+      :up="upOption" @up="upCallback">
+
+
+      <u-tabs :list="cateList" :is-scroll="true" active-color="#fa2209" :current="currentCateIndex" @change="getCateId">
+      </u-tabs>
+
       <u-notice-bar v-if="noticeList.length>0" mode="horizontal" color="#de8c17" :list="noticeList"></u-notice-bar>
 
 
@@ -90,35 +93,8 @@
 
     mixins: [MescrollMixin],
 
-
-    onLoad() {
-      // var app = this
-      // uni.getLocation({
-      //   type: 'gcj02', //返回可以用于uni.openLocation的经纬度
-      //   success: function(res) {
-      //     const latitude = res.latitude;
-      //     const longitude = res.longitude;
-      //     console.log(res)
-
-      //     app.getCityByLatLon(res)
-      //     // uni.openLocation({
-      //     // 	latitude: latitude,
-      //     // 	longitude: longitude,
-      //     // 	success: function () {
-      //     // 		console.log('success');
-      //     // 	}
-      //     // });
-      //   }
-      // });
-
-    },
-
     onShow() {
-      // this.getShopList()
-      // this.getCateList()
-      MerchantsApi.notice().then(res => {
-        this.noticeList.push(res.data.notice)
-      })
+      this.getNoticeList()
     },
 
     methods: {
@@ -158,6 +134,7 @@
       // 刷新订单列表
       onRefreshList() {
         this.list = getEmptyPaginateObj()
+        this.getNoticeList()
         setTimeout(() => {
           this.mescroll.resetUpScroll()
         }, 500)
@@ -205,25 +182,16 @@
         })
       },
 
-      toSearch() {
-        this.$navTo('pages/merchants/search')
+      getNoticeList() {
+        MerchantsApi.notice().then(res => {
+          this.noticeList = []
+          this.noticeList.push(res.data.notice)
+        })
       },
 
-      // // 根据经纬度获取详细城市 默认长沙
-      // getCityByLatLon({ latitude = '28.23529', longitude = '112.93134' }) {
-      //   var app = this
-      //   qqmapsdk.reverseGeocoder({
-      //     location: {
-      //       latitude,
-      //       longitude
-      //     },
-      //     success(res, data) {
-      //       console.log('res', res);
-      //       const { city } = res.result.ad_info
-      //       app.city = city
-      //     }
-      //   })
-      // }
+      toSearch() {
+        this.$navTo('pages/merchants/search')
+      }
     }
   }
 </script>
@@ -291,6 +259,7 @@
       align-items: center;
       padding: 0 30rpx;
       box-sizing: border-box;
+      background-color: white;
 
       /deep/ u-search {
         flex: 1;

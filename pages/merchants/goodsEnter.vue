@@ -18,8 +18,7 @@
       </van-cell-group>
 
       <van-cell-group title="请上传商品图(建议750*750)">
-        <van-uploader upload-icon="plus" :file-list="fileList" @after-read="logoAfterRead" :max-count="1"
-          @delete="deleteImg">
+        <van-uploader upload-icon="plus" :file-list="fileList" @after-read="logoAfterRead" @delete="deleteImg">
           <!-- <van-button icon="photo" type="primary">上传商品图</van-button> -->
         </van-uploader>
       </van-cell-group>
@@ -52,7 +51,7 @@
           // 商品简介
           selling_point: '',
           // 商品图id
-          image_id: ''
+          image_id: []
         },
         verify: {}
       }
@@ -105,7 +104,7 @@
       save() {
         const result = this.checkField()
         if (result > 0) return
-        // TODO 提交后台
+
         if (this.flag) {
           return MerchantsApi.editGoods(this.form).then(res => {
             this.$toast('编辑成功')
@@ -115,6 +114,8 @@
             }, 1000)
           })
         }
+
+        // 添加商品
         MerchantsApi.addGoods(this.form).then(res => {
           this.$toast('保存成功')
           let timer = setTimeout(() => {
@@ -175,7 +176,7 @@
               return new Promise((resolve, reject) => {
                 UploadApi.image(file.images)
                   .then((fileIds, result) => {
-                    app.form.image_id = fileIds[0]
+                    app.form.image_id = fileIds
                     resolve(fileIds)
                   })
                   .catch(reject)

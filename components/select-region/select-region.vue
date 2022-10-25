@@ -94,6 +94,15 @@
         app.isLoading = true
         RegionModel.getTreeData()
           .then(regions => {
+            regions['0'] = {
+              id: -1,
+              level: 1,
+              name: "全部",
+              pid: 0,
+              city: {
+
+              }
+            }
             // 格式化级联选择器数据
             this.options = this.getOptions(regions)
           })
@@ -142,13 +151,13 @@
 
       // 获取子集地区
       getChildren(item) {
-        if (item.city) {          
+        if (item.city) {
           item.city[0] = {
             id: -1,
             level: 2,
             name: "全部",
             pid: 0,
-            region:[]
+            region: []
           }
           return item.city
         }
@@ -159,7 +168,7 @@
             level: 3,
             name: "全部",
             pid: 0
-            
+
           }
           return item.region
         }

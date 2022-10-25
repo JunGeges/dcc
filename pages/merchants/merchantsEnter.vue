@@ -37,7 +37,15 @@
     </view>
 
     <!-- 分类 -->
-    <u-action-sheet :list="categoryList" @click="selectCate" v-model="showCate"></u-action-sheet>
+    <van-popup :show="showCate" @close="showCateList" position="bottom" closeable>
+      <van-radio-group :value="form.category_id" @change="selectCate" direction="horizontal">
+        <van-radio checked-color="#fa2209" :name="item.category_id" v-for="item,index in categoryList" :key="index">
+          {{ item.name }}</van-radio>
+      </van-radio-group>
+
+    </van-popup>
+
+
 
   </view>
 </template>
@@ -159,7 +167,7 @@
           this.form.lng = lng
           this.form.logo_image_id = logo_image_id
           this.form.logo_image = logo_image
-          this.form.category_id = category_id
+          this.form.category_id = category_id + ''
           this.form.category_name = this.categoryList.filter(item => item.category_id == category_id)[0].text
           this.form.region = [
             { label: province, value: province_id },
@@ -192,7 +200,7 @@
       },
 
       // 显示分类
-      showCateList() {
+      showCateList(e) {
         this.showCate = !this.showCate
       },
 
@@ -208,8 +216,9 @@
       },
 
       // 选择分类
-      selectCate(index) {
-        const category_id = this.categoryList[index].category_id + ''
+      selectCate(e) {
+        this.showCateList()
+        const category_id = e.mp.detail + ''
         this.form.category_id = category_id
         this.form.category_name = this.categoryList.filter(item => item.category_id == category_id)[0].text
       },
@@ -225,7 +234,7 @@
       // 提交保存
       save() {
         const result = this.checkField()
-        console.log(result,'~~~~');
+        console.log(result, '~~~~');
         if (result > 0) return
         // 提交后台
         MerchantsApi.add(this.form).then(res => {
@@ -243,7 +252,8 @@
           this.categoryList = res.data.list.map(({ category_name, category_id }) => {
             return {
               text: category_name,
-              category_id
+              category_id,
+              name: category_name
             }
           })
         })
@@ -274,7 +284,7 @@
       // 删除图片
       deleteImg() {
         this.fileList.splice(0, 1)
-        this.form.image_id = ''
+        this.form.logo_image_id = ''
       },
 
       // 文件长传回调
@@ -299,7 +309,7 @@
               return new Promise((resolve, reject) => {
                 UploadApi.image(file.images)
                   .then((fileIds, result) => {
-                    app.form.logo_image_id = fileIds[0]
+                    app.form.logo_image_id = fileIds[0] + ''
                     resolve(fileIds)
                   })
                   .catch(reject)
@@ -315,6 +325,15 @@
 <style lang="scss" scoped>
   .merchants-enter-container {
     height: 100vh;
+
+    /deep/ .van-popup {
+      padding: 30rpx;
+      box-sizing: border-box;
+    }
+
+    /deep/ .van-radio {
+      margin-bottom: 20rpx;
+    }
 
     /deep/ .van-button--large {
       width: 80%;
@@ -332,5 +351,6 @@
       margin-top: 20rpx;
       font-size: 24rpx;
     }
+
   }
 </style>

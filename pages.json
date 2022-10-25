@@ -411,7 +411,9 @@
       "van-cell": "wxcomponents/vant/cell/index",
       "van-field": "wxcomponents/vant/field/index",
       "van-area": "wxcomponents/vant/area/index",
-      "van-action-sheet ": "wxcomponents/vant/action-sheet/index"
+      "van-radio": "wxcomponents/vant/radio/index",
+      "van-popup": "wxcomponents/vant/popup/index",
+      "van-radio-group": "wxcomponents/vant/radio-group/index"
     }
   },
   "easycom": {

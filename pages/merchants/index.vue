@@ -156,7 +156,6 @@
 
       // 获取选择的省市区
       getSelectArea(res) {
-        console.log(res)
         this.form.province = res[0].value
         this.form.city = res[1].value
         this.form.region = res[2].value

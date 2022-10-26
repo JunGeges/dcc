@@ -67,7 +67,7 @@
           province: '',
           region: ''
         },
-        // 文案列表数据
+        // 店铺数据列表
         list: getEmptyPaginateObj(),
 
         // 上拉加载配置

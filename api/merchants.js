@@ -12,6 +12,7 @@ const api = {
   getList: 'shop/getList',
   notice: 'shop/notice',
   open: 'shop/open',
+  delGoods: 'shop/delGoods'
 }
 
 // 店铺入驻
@@ -36,6 +37,11 @@ export const addGoods = (param) => {
 // 编辑商品
 export const editGoods = (param) => {
   return request.post(api.editGoods, param)
+}
+
+// 删除店铺
+export const delGoods = (param) => {
+  return request.post(api.delGoods, param)
 }
 
 // 商品列表

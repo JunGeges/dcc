@@ -10,6 +10,13 @@
       <view class="">店铺简介：</view>
       <view class="">{{ shopInfo.store_info }}</view>
     </view>
+    <view class="m-desc" @click="callPhone">
+      <view class="">联系方式：</view>
+      <view class="">{{ shopInfo.phone }}</view>
+      <view class="phone">
+        <van-icon name="phone-o" />
+      </view>
+    </view>
     <!-- 店铺地址 -->
     <view class="m-address" @click="navigation">
       <van-icon class="iconfont3" class-prefix="icon" name="ditu_dingwei_o"></van-icon>
@@ -21,7 +28,7 @@
     </view>
     <!-- 店铺商品 -->
     <view class="goods-box" v-for="item,index in shopInfo.goods" :key="index" @click="goGoodsDetail(item.goods_id)">
-      <image :src="item.goods_image" mode="aspectFit"></image>
+      <image :src="item.goods_image[0]" mode="aspectFit"></image>
       <view class="goods-info">
         <view class="">{{ item.goods_name }}</view>
         <view class="price-box">
@@ -84,6 +91,14 @@
             console.log('success')
           }
         })
+      },
+
+      // 打电话
+      callPhone() {
+        const app = this
+        uni.makePhoneCall({
+          phoneNumber: app.shopInfo.phone
+        })
       }
     }
   }
@@ -133,11 +148,17 @@
 
       border: {
         top: 1rpx solid #efefef;
-        bottom: 1rpx solid #efefef;
+        // bottom: 1rpx solid #efefef;
       }
 
       & view:last-child {
         flex: 1;
+      }
+
+      .phone {
+        margin-right: 30rpx;
+        font-size: 35rpx;
+        text-align: right
       }
     }
 
@@ -146,6 +167,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      border-top: 1rpx solid #efefef;
       padding: 30rpx;
 
       .address {

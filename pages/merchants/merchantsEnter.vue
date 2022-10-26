@@ -14,6 +14,8 @@
 
         <van-field :value="form.store_info" @input="form.store_info = $event.mp.detail" required clearable label="店铺简介"
           placeholder="请输入店铺简介" autosize type="textarea" :error-message="verify.store_info" />
+        <van-field :value="form.phone" @input="form.phone = $event.mp.detail" required clearable label="联系方式"
+          placeholder="请输入联系方式" type="number" :error-message="verify.phone" />
 
         <van-field :value="form.category_name" required clearable label="店铺分类" placeholder="请选择分类" readonly
           right-icon="arrow-down" :error-message="verify.category_id" @click-input="showCateList" />
@@ -40,7 +42,8 @@
     <van-popup :show="showCate" @close="showCateList" position="bottom" closeable>
       <van-radio-group :value="form.category_id" @change="selectCate" direction="horizontal">
         <van-radio checked-color="#fa2209" :name="item.category_id" v-for="item,index in categoryList" :key="index">
-          {{ item.name }}</van-radio>
+          {{ item.name }}
+        </van-radio>
       </van-radio-group>
 
     </van-popup>
@@ -79,6 +82,8 @@
           store_name: '',
           // 店铺简介
           store_info: '',
+          // 联系方式
+          phone: '',
           // 省市区
           region: '',
           // 经度
@@ -147,6 +152,7 @@
           const {
             store_name,
             store_address,
+            phone,
             store_info,
             logo_image_id,
             category_id,
@@ -162,6 +168,7 @@
           } = res.data.info
           this.form.store_name = store_name
           this.form.store_info = store_info
+          this.form.phone = phone
           this.form.store_address = store_address
           this.form.lat = lat
           this.form.lng = lng
@@ -267,6 +274,7 @@
           store_info: '店铺简介',
           category_id: '店铺分类',
           store_address: '详细地址',
+          phone: '联系方式',
           region: '省市区',
           logo_image_id: '店铺LOGO',
         }

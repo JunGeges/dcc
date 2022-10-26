@@ -39,6 +39,8 @@
       return {
         // 文件id
         fileList: [],
+        // 编辑加入的图片
+        editFileList: [],
         form: {
           // 店铺id
           shop_id: '',
@@ -85,7 +87,6 @@
       const form = { goods_id }
       if (flag) {
         MerchantsApi.goodsInfo(form).then(res => {
-          res.data.info.goods_image = [res.data.info.goods_image]
           const { goods_name, goods_price, line_price, selling_point, image_id, goods_image } = res.data.info
           this.form.goods_name = goods_name
           this.form.goods_price = goods_price
@@ -93,7 +94,9 @@
           this.form.selling_point = selling_point
           this.form.image_id = image_id
 
-          this.fileList.push({ url: goods_image })
+          Array.isArray(goods_image) && goods_image.forEach(item => {
+            this.fileList.push({ path: item, url: item })
+          })
         })
       }
     },
@@ -117,7 +120,7 @@
 
         // 添加商品
         MerchantsApi.addGoods(this.form).then(res => {
-          this.$toast('保存成功')
+          this.$toast(res.message)
           let timer = setTimeout(() => {
             clearTimeout(timer)
             uni.navigateBack()
@@ -149,16 +152,18 @@
       },
 
       // 删除图片
-      deleteImg() {
-        this.fileList.splice(0, 1)
-        this.form.image_id = ''
+      deleteImg(e) {
+        const { index } = e.detail
+        this.fileList.splice(index, 1)
+        this.form.image_id.splice(index, 1)
       },
 
       // 文件长传回调
       logoAfterRead(file) {
         console.log(file);
         const { url: path, size } = file.detail.file
-        this.fileList.push({ path, size, url: path, })
+        this.editFileList.push({ path, size, url: path })
+        this.fileList.push({ path, size, url: path })
         this.uploadFile()
       },
 
@@ -167,7 +172,8 @@
         const app = this
         // 整理上传文件路径
         const files = []
-        const images = this.fileList.map(image => image)
+        const uploadFileList = this.flag ? this.editFileList : this.fileList
+        const images = uploadFileList.map(image => image)
         files.push({ formDataIndex: 0, images })
 
         // 批量上传
@@ -176,7 +182,7 @@
               return new Promise((resolve, reject) => {
                 UploadApi.image(file.images)
                   .then((fileIds, result) => {
-                    app.form.image_id = fileIds
+                    app.form.image_id = app.form.image_id.concat(fileIds)
                     resolve(fileIds)
                   })
                   .catch(reject)

@@ -38,7 +38,6 @@
     
     onShow() {
       MerchantsApi.goodsInfo(this.form).then(res => {
-        res.data.info.goods_image = [res.data.info.goods_image]
         this.goodsInfo = res.data.info
       })
     },

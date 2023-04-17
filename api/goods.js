@@ -13,8 +13,8 @@ export const list = param => {
 }
 
 // 商品详情
-export const detail = goodsId => {
-  return request.get(api.detail, { goodsId })
+export const detail = (param) => {
+  return request.get(api.detail, param)
 }
 
 // 获取商品规格数据

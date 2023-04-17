@@ -157,6 +157,7 @@
         this.$navTo('pages/checkout/index', {
           mode: 'buyNow',
           goodsId: selectShop.goods_id,
+					tuanGoodsId: this.goods.tuanGoodsId,
           goodsSkuId: selectShop.goods_sku_id,
           goodsNum: selectShop.buy_num
         })

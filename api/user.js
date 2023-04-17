@@ -8,7 +8,8 @@ const api = {
   spreadBanner: 'user/spreadBanner',
   applyWithdraw: 'user/applyWithdraw',
   withdrawRecord: 'user/getWithdrawList',
-  myLuckRecord: 'user/myLuckRecord'
+  myLuckRecord: 'user/myLuckRecord',
+	userinfo: 'passport/loginCodeUserInfo'
 }
 
 // 当前登录的用户信息
@@ -20,6 +21,12 @@ export const info = (param, option) => {
   }
   return request.get(api.userInfo, param, options)
 }
+
+//根据code换取用户信息
+export const getUserInfo = (data) => {
+  return request.post(api.userinfo, data)
+}
+
 
 // 账户资产
 export const assets = (param, option) => {

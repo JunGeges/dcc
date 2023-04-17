@@ -33,7 +33,7 @@
     <!-- 商品列表 -->
     <view class="m-top20">
       <view class="checkout_list" v-for="(item, index) in order.goodsList" :key="index">
-        <view class="flow-shopList dis-flex" data-index="index" @click="onTargetGoods(item.goods_id)">
+        <view class="flow-shopList dis-flex" data-index="index" @click="onTargetGoods(item.goods_id,item.tuanGoodsId)">
           <!-- 商品图片 -->
           <view class="flow-list-left">
             <image mode="scaleToFill" :src="item.goods_image"></image>
@@ -331,6 +331,11 @@
         app.order = order
         app.personal = personal
         app.setting = setting
+				// 绑定团购商品id
+				const { goodsList } = order
+				goodsList.forEach(item => {
+					item['tuanGoodsId'] = app.options.tuanGoodsId
+				})
         // 显示错误信息
         if (order.hasError) {
           app.$toast(order.errorMsg)
@@ -355,6 +360,7 @@
         if (options.mode === 'buyNow') {
           modeParam.goodsId = options.goodsId
           modeParam.goodsNum = options.goodsNum
+					modeParam.tuanGoodsId = options.tuanGoodsId
           modeParam.goodsSkuId = options.goodsSkuId
         }
         // 结算模式: 购物车
@@ -420,8 +426,8 @@
       },
 
       // 跳转到商品详情页
-      onTargetGoods(goodsId) {
-        this.$navTo('pages/goods/detail', { goodsId })
+      onTargetGoods(goodsId,tuanGoodsId) {
+        this.$navTo('pages/goods/detail', { goodsId,tuanGoodsId })
       },
 
       // 订单提交
@@ -494,6 +500,7 @@
         // 创建订单-立即购买
         if (options.mode === 'buyNow') {
           form.goodsId = options.goodsId
+          form.tuanGoodsId = options.tuanGoodsId
           form.goodsNum = options.goodsNum
           form.goodsSkuId = options.goodsSkuId
         }

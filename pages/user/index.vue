@@ -44,7 +44,7 @@
       <view class="asset-left flex-box dis-flex flex-x-around">
         <view class="asset-left-item" @click="onTargetWallet">
           <view class="item-value dis-flex flex-x-center">
-            <text>{{ isLogin ? assets.profit : '--' }}</text>
+            <text>{{ isLogin ? assets.profit || 0: '--' }}</text>
           </view>
           <view class="item-name dis-flex flex-x-center">
             <text>我的钱包</text>
@@ -60,10 +60,10 @@
         </view> -->
         <view class="asset-left-item" @click="onTargetPrizeTicket">
           <view class="item-value dis-flex flex-x-center">
-            <text>{{ isLogin ? assets.luck : '--' }}</text>
+            <text>{{ isLogin ? assets.balance: '--' }}</text>
           </view>
           <view class="item-name dis-flex flex-x-center">
-            <text>抽奖券</text>
+            <text>余额</text>
           </view>
         </view>
       </view>
@@ -161,24 +161,24 @@
    * id: 标识; name: 标题名称; icon: 图标; type 类型(link和button); url: 跳转的链接
    */
   const service = [
-    { id: 'lucky', name: '抽奖', icon: 'choujiang', type: 'link', url: 'lucky/lucky/index', flag: 'iconfont2' },
-    {
-      id: 'luckyRecord',
-      name: '我的中奖',
-      icon: 'zhongjiangjilu',
-      type: 'link',
-      url: 'lucky/lucky/luckyRecord',
-      flag: 'iconfont2'
-    },
-    {
-      id: 'luckyBig',
-      name: '大奖公告',
-      icon: 'jiangchenggongshi',
-      type: 'link',
-      url: 'lucky/lucky/prizeList',
-      flag: 'iconfont2'
-    },
-    { id: 'friend', name: '我的好友', icon: 'tuandui', type: 'link', url: 'pages/team/index' },
+    // { id: 'lucky', name: '站长发文', icon: 'choujiang', type: 'link', url: 'article/pages/center', flag: 'iconfont2' },
+    // {
+    //   id: 'luckyRecord',
+    //   name: '我的中奖',
+    //   icon: 'zhongjiangjilu',
+    //   type: 'link',
+    //   url: 'lucky/lucky/luckyRecord',
+    //   flag: 'iconfont2'
+    // },
+    // {
+    //   id: 'luckyBig',
+    //   name: '大奖公告',
+    //   icon: 'jiangchenggongshi',
+    //   type: 'link',
+    //   url: 'lucky/lucky/prizeList',
+    //   flag: 'iconfont2'
+    // },
+    // { id: 'friend', name: '我的好友', icon: 'tuandui', type: 'link', url: 'pages/team/index' },
     { id: 'address', name: '收货地址', icon: 'shouhuodizhi', type: 'link', url: 'pages/address/index' },
     // { id: 'coupon', name: '领券中心', icon: 'lingquan', type: 'link', url: 'pages/coupon/index' },
     // { id: 'coupon', name: '领券中心', icon: 'lingquan', type: 'link', url: 'pages/coupon/index' },
@@ -187,8 +187,8 @@
     // { id: 'contact', name: '在线客服', icon: 'kefu', type: 'button', openType: 'contact' },
     // { id: 'points', name: '我的积分', icon: 'jifen', type: 'link', url: 'pages/points/log' },
     // { id: 'refund', name: '退换/售后', icon: 'shouhou', type: 'link', url: 'pages/refund/index', count: 0 },
-    { id: 'bank', name: '我的银行卡', icon: 'yinhangka', type: 'link', url: 'pages/bank/bankList', flag: 'iconfont2' },
-    { id: 'questionnaire', name: '问卷调查', icon: 'qpdingdan', type: 'link', url: 'pages/questionnaire/index' }
+    // { id: 'bank', name: '我的银行卡', icon: 'yinhangka', type: 'link', url: 'pages/bank/bankList', flag: 'iconfont2' },
+    // { id: 'questionnaire', name: '问卷调查', icon: 'qpdingdan', type: 'link', url: 'pages/questionnaire/index' }
   ]
 
   export default {
@@ -273,7 +273,7 @@
           }
           newService.push(item)
         })
-        if (app.userInfo.is_open) {
+        // if (app.userInfo.is_open) {
           newService.push({
             id: 'shop',
             name: '店铺入驻',
@@ -282,7 +282,7 @@
             url: 'pages/merchants/merchantsEnter',
             flag: 'iconfont3'
           }, )
-        }
+        // }
         app.service = newService
       },
 
@@ -318,6 +318,7 @@
           !app.isLogin ? resolve(null) : UserApi.info({}, { load: app.isFirstload })
             .then(result => {
               app.userInfo = result.data.userInfo
+							uni.setStorageSync('isZz', app.userInfo.grade_id?app.userInfo.grade.weight:0)
               resolve(app.userInfo)
             })
             .catch(err => {
@@ -333,9 +334,9 @@
 
       // 判断是否拥有店铺了
       hasShop(userInfo) {
-        const { is_shop } = userInfo
+        const { is_own_shop } = userInfo
         const service = this.service
-        if (is_shop) {
+        if (is_own_shop) {
           service.forEach((item, index) => {
             if (item.id === 'shop') {
               item.name = '我的店铺'
@@ -436,7 +437,7 @@
       // 跳转到服务页面
       handleService({ url, id }) {
         if (id == "shop") {
-          url = this.userInfo.is_shop === 0 ? 'pages/merchants/merchantsEnter' : 'pages/merchants/myMerchants'
+          url = this.userInfo.is_own_shop === 0 ? 'pages/merchants/merchantsEnter' : 'pages/merchants/myMerchants'
         }
         this.$navTo(url)
       },

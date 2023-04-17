@@ -2,69 +2,98 @@ import request from '@/utils/request'
 
 // api地址
 const api = {
-  add: 'shop/add',
-  detail: 'shop/detail',
-  categoryList: 'shop/categoryList',
-  addGoods: 'shop/addGoods',
-  editGoods: 'shop/editGoods',
-  goodsList: 'shop/goodsList',
-  goodsInfo: 'shop/goodsInfo',
-  getList: 'shop/getList',
-  notice: 'shop/notice',
-  open: 'shop/open',
-  delGoods: 'shop/delGoods'
+	add: 'shop/joinShop',
+	edit: 'shop/editShop',
+	detail: 'shop/getShopInfo',
+	getShop: 'shop/getShop',
+	categoryList: 'shop/categoryList',
+	goodsCategoryList: 'category/list',
+	addGoods: 'shop/addGoods',
+	editGoods: 'shop/editGoods',
+	nearbyShopList: 'shop/nearbyShopList',
+	goodsInfo: 'shop/goodsInfo',
+	getList: 'shop/getList',
+	notice: 'shop/notice',
+	open: 'shop/open',
+	goodsList: 'shop/goodsList',
+	delGoods: 'shop/delGoods',
+	getShopTradeInfo: 'shop/getShopTradeInfo',
+	getShopPaymentList: 'shop/getShopPaymentList'
 }
 
 // 店铺入驻
 export const add = (param) => {
-  return request.post(api.add, param)
+	return request.post(api.add, param)
+}
+// 店铺编辑
+export const edit = (param) => {
+	return request.post(api.edit, param)
 }
 
 // 店铺详情
 export const detail = (param) => {
-  return request.get(api.detail, param)
+	return request.get(api.detail, param)
+}
+// 店铺详情2
+export const getShop = (param) => {
+	return request.get(api.getShop, param)
 }
 
 // 店铺分类
 export const categoryList = (param) => {
-  return request.get(api.categoryList, param)
+	return request.get(api.categoryList, param)
+}
+
+// 商品分类
+export const goodsCategoryList = (param) => {
+	return request.get(api.goodsCategoryList, param)
 }
 
 // 添加商品
 export const addGoods = (param) => {
-  return request.post(api.addGoods, param)
+	return request.post(api.addGoods, param)
 }
 // 编辑商品
 export const editGoods = (param) => {
-  return request.post(api.editGoods, param)
+	return request.post(api.editGoods, param)
 }
 
 // 删除店铺
 export const delGoods = (param) => {
-  return request.post(api.delGoods, param)
+	return request.post(api.delGoods, param)
 }
 
 // 商品列表
 export const goodsList = (param) => {
-  return request.get(api.goodsList, param)
+	return request.get(api.goodsList, param)
 }
 
 // 商品详情
 export const goodsInfo = (param) => {
-  return request.get(api.goodsInfo, param)
+	return request.get(api.goodsInfo, param)
 }
 
 // 首页店铺集合
-export const getList = (param) => {
-  return request.get(api.getList, param)
+export const nearbyShopList = (param) => {
+	return request.post(api.nearbyShopList, param)
 }
 
 // 店铺通知
 export const notice = (param) => {
-  return request.get(api.notice, param)
+	return request.get(api.notice, param)
 }
 
 // 是否隐藏模块 
 export const open = (param) => {
-  return request.get(api.open, param)
+	return request.get(api.open, param)
+}
+
+//  店铺营业额基本信息
+export const getShopTradeInfo = (param) => {
+	return request.get(api.getShopTradeInfo, param)
+}
+
+//  店铺营业额流水列表
+export const getShopPaymentList = (param) => {
+	return request.get(api.getShopPaymentList, param)
 }

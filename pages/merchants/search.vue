@@ -7,14 +7,14 @@
     <mescroll-body ref="mescrollRef" :sticky="true" @init="mescrollInit" :down="{ native: true,auto:false }"
       @down="downCallback" :up="upOption" @up="upCallback">
       <view class="shop-box" v-if="list.data.length>0">
-        <view class="shop-item" v-for="item,index in list.data" :key="index" @click="toShopDetail(item.store_shop_id)">
-          <image :src="item.logo_image" mode="aspectFit"></image>
+        <view class="shop-item" v-for="item,index in list.data" :key="index" @click="toShopDetail(item.shop_id)">
+          <image :src="item.logo_image_url" mode="aspectFill"></image>
           <view class="shop-info">
             <view class="shop-title">{{ item.store_name }}</view>
             <view class="shop-desc">{{ item.store_info}}</view>
             <view class="shop-address">
               <van-icon name="location-o" />
-              {{ item.regions }}
+              {{ item.detail }}
             </view>
           </view>
         </view>
@@ -68,7 +68,6 @@
        * @param {Object} page
        */
       upCallback(page) {
-        console.log('upcallback');
         const app = this
         // 设置列表数据
         app.getShopList(page.num)
@@ -84,7 +83,7 @@
       getShopList(pageNo = 1) {
         const app = this
         return new Promise((resolve, reject) => {
-          MerchantsApi.getList({ keyword: app.keyword, page: pageNo })
+          MerchantsApi.nearbyShopList({ keyword: app.keyword, page: pageNo })
             .then(result => {
               // 合并新数据
               const newList = result.data.list

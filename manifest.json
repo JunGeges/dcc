@@ -1,5 +1,5 @@
 {
-    "name" : "萤火商城2.0",
+    "name" : "点出彩",
     "appid" : "__UNI__7222C05",
     "description" : "萤火商城V2.0，是2021年全新推出的一款轻量级、高性能、前后端分离的电商系统",
     "versionName" : "2.0.3",
@@ -70,7 +70,7 @@
     "quickapp" : {},
     /* 小程序特有相关 */
     "mp-weixin" : {
-        "appid" : "wx2dc6eb13da3b5ffb",
+        "appid" : "wx98901123375767c2",
         "setting" : {
             // 是否检查安全域名和 TLS 版本
             "urlCheck" : true,
@@ -89,10 +89,10 @@
         },
         "usingComponents" : true,
         "lazyCodeLoading" : "requiredComponents",
-        "requiredPrivateInfos" : [ "chooseAddress" ],
+        "requiredPrivateInfos" : [ "chooseAddress", "getLocation" ],
         "permission" : {
             "scope.userLocation" : {
-                "desc" : "你的位置信息将用于小程序定位获取城市"
+                "desc" : "用于显示附近店铺"
             }
         },
         "optimization" : {

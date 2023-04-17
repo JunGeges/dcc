@@ -81,7 +81,7 @@
     <!-- 商品列表 -->
     <view class="goods-list i-card">
       <view class="goods-item" v-for="(goods, idx) in order.goods" :key="idx">
-        <view class="goods-main" @click="handleTargetGoods(goods.goods_id)">
+        <view class="goods-main" @click="handleTargetGoods(goods.goods_id, goods.tuan_goods_id)">
           <!-- 商品图片 -->
           <view class="goods-image">
             <image class="image" :src="goods.goods_image" mode="scaleToFill"></image>
@@ -324,8 +324,8 @@
       },
 
       // 跳转到商品详情页面
-      handleTargetGoods(goodsId) {
-        this.$navTo('pages/goods/detail', { goodsId })
+      handleTargetGoods(goodsId,tuanGoodsId) {
+        this.$navTo('pages/goods/detail', { goodsId, tuanGoodsId })
       },
 
       // 跳转到申请售后页面

@@ -18,7 +18,12 @@ const api = {
 	goodsList: 'shop/goodsList',
 	delGoods: 'shop/delGoods',
 	getShopTradeInfo: 'shop/getShopTradeInfo',
-	getShopPaymentList: 'shop/getShopPaymentList'
+	getShopPaymentList: 'shop/getShopPaymentList',
+	createShopCode: 'shop/createShopCode',
+	getShopOrderList: 'shop/getShopOrderList',
+	getExpressList: 'shop/getExpressList',
+	deliveryOrder: 'shop/deliveryOrder',
+	payOfflineOrder: 'shop/payOfflineOrder'
 }
 
 // 店铺入驻
@@ -96,4 +101,29 @@ export const getShopTradeInfo = (param) => {
 //  店铺营业额流水列表
 export const getShopPaymentList = (param) => {
 	return request.get(api.getShopPaymentList, param)
+}
+
+// 获取店铺付款码
+export const createShopCode = (param) => {
+	return request.get(api.createShopCode, param)
+}
+
+// 获取店铺订单列表
+export const getShopOrderList = (param) => {
+	return request.get(api.getShopOrderList, param)
+}
+
+// 快递公司列表
+export const getExpressList = (param) => {
+	return request.get(api.getExpressList, param)
+}
+
+// 发货
+export const deliveryOrder = (param) => {
+	return request.post(api.deliveryOrder, param)
+}
+
+// 线下收款码支付
+export const payOfflineOrder = (param) => {
+	return request.post(api.payOfflineOrder, param)
 }

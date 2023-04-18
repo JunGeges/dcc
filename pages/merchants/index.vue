@@ -127,7 +127,6 @@
 			// 获取店铺列表
 			getShopList(pageNo = 1) {
 				const app = this
-				console.log('123');
 				return new Promise((resolve, reject) => {
 					MerchantsApi.nearbyShopList({
 							page: pageNo,

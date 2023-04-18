@@ -18,6 +18,32 @@
 							<text class="state-text">{{ item.state_text }}</text>
 						</view>
 					</view>
+					<view class="item-top">
+						<view class="item-top-left">
+							<text class="order-time">订单号：{{ item.order_no }}</text>
+						</view>
+						<view class="item-top-right">
+							<text class="state-text">{{ item.is_tuan?'团购订单':'' }}</text>
+						</view>
+					</view>
+					<!-- 已发货显示物流信息 -->
+					<view v-if="item.delivery_status == DeliveryStatusEnum.DELIVERED.value">
+						<view class="item-top">
+							<view class="item-top-left">
+								<text class="order-time">快递号：{{ item.express_no }}</text>
+							</view>
+						</view>
+						<view class="item-top">
+							<view class="item-top-left">
+								<text class="order-time">快递公司：{{ item.express_company }}</text>
+							</view>
+						</view>
+						<view class="item-top">
+							<view class="item-top-left">
+								<text class="order-time">发货时间：{{ item.delivery_time }}</text>
+							</view>
+						</view>
+					</view>
 					<!-- 商品列表 -->
 					<view class="goods-list" @click="handleTargetDetail(item.order_id)">
 						<view class="goods-item" v-for="(goods, idx) in item.goods" :key="idx">
@@ -57,31 +83,9 @@
 					<!-- 订单操作 -->
 					<view v-if="item.order_status != OrderStatusEnum.CANCELLED.value" class="order-handle">
 						<view class="btn-group clearfix">
-							<!-- 未支付取消订单 -->
-							<block v-if="item.pay_status == PayStatusEnum.PENDING.value">
-								<view class="btn-item" @click="onCancel(item.order_id)">取消</view>
-							</block>
-							<!-- 已支付进行中的订单 -->
-							<block v-if="item.order_status != OrderStatusEnum.APPLY_CANCEL.value">
-								<block
-									v-if="item.pay_status == PayStatusEnum.SUCCESS.value && item.delivery_status == DeliveryStatusEnum.NOT_DELIVERED.value">
-									<view class="btn-item" @click="onCancel(item.order_id)">申请取消</view>
-								</block>
-							</block>
-							<!-- 已申请取消 -->
-							<view v-else class="f-28 col-8">取消申请中</view>
-							<!-- 未支付的订单 -->
-							<block v-if="item.pay_status == PayStatusEnum.PENDING.value">
-								<view class="btn-item active" @click="onPay(item.order_id)">去支付</view>
-							</block>
-							<!-- 确认收货 -->
-							<block
-								v-if="item.delivery_status == DeliveryStatusEnum.DELIVERED.value && item.receipt_status == ReceiptStatusEnum.NOT_RECEIVED.value">
-								<view class="btn-item active" @click="onReceipt(item.order_id)">确认收货</view>
-							</block>
-							<!-- 订单评价 -->
-							<block v-if="item.order_status == OrderStatusEnum.COMPLETED.value && item.is_comment == 0">
-								<view class="btn-item" @click="handleTargetComment(item.order_id)">评价</view>
+							<!-- 确认发货 -->
+							<block v-if="item.delivery_status == DeliveryStatusEnum.NOT_DELIVERED.value">
+								<view class="btn-item active" @click="onCloseDelivery(item.order_id)">发货</view>
 							</block>
 						</view>
 					</view>
@@ -90,39 +94,18 @@
 			</view>
 		</mescroll-body>
 
-		<!-- 支付方式弹窗 -->
-		<u-popup v-model="showPayPopup" mode="bottom" border-radius="26" :closeable="true">
-			<view class="pay-popup">
-				<view class="title">请选择支付方式</view>
-				<view class="pop-content">
-					<!-- 微信支付 -->
-					<!-- #ifdef MP-WEIXIN -->
-					<view class="pay-item dis-flex flex-x-between" @click="onSelectPayType(PayTypeEnum.WECHAT.value)">
-						<view class="item-left dis-flex flex-y-center">
-							<view class="item-left_icon wechat">
-								<text class="iconfont icon-wechat-pay"></text>
-							</view>
-							<view class="item-left_text">
-								<text>{{ PayTypeEnum.WECHAT.name }}</text>
-							</view>
-						</view>
-					</view>
-					<!-- #endif -->
-					<!-- 余额支付 -->
-					<!--          <view class="pay-item dis-flex flex-x-between" @click="onSelectPayType(PayTypeEnum.BALANCE.value)">
-            <view class="item-left dis-flex flex-y-center">
-              <view class="item-left_icon balance">
-                <text class="iconfont icon-balance-pay"></text>
-              </view>
-              <view class="item-left_text">
-                <text>{{ PayTypeEnum.BALANCE.name }}</text>
-              </view>
-            </view>
-          </view> -->
-				</view>
+		<van-action-sheet :show="isShowDelivery" title="填写物流信息" @close="onCloseDelivery">
+			<!-- 发货区域 -->
+			<view>
+				<van-field :value="form.express_no" type="number" placeholder="请输入物流单号" :border="false"
+					@change="getExpressNo" />
+				<van-cell title="快递公司" is-link :value="form.express_company" :border="false" @click="showExpress" />
+				<view class="delivery-btn" @click="onDelivery">确认发货</view>
 			</view>
-		</u-popup>
+		</van-action-sheet>
 
+		<van-action-sheet :show="isShowExpress" :actions="express_action" @close="showExpress"
+			@select="selectExpressType" />
 	</view>
 
 </template>
@@ -132,9 +115,6 @@
 		DeliveryStatusEnum,
 		DeliveryTypeEnum,
 		OrderStatusEnum,
-		PayStatusEnum,
-		PayTypeEnum,
-		ReceiptStatusEnum
 	} from '@/common/enum/order'
 	import MescrollBody from '@/components/mescroll-uni/mescroll-body.vue'
 	import MescrollMixin from '@/components/mescroll-uni/mescroll-mixins'
@@ -143,6 +123,7 @@
 		getMoreListData
 	} from '@/core/app'
 	import * as OrderApi from '@/api/order'
+	import * as MerchantsApi from '@/api/merchants'
 	import {
 		wxPayment
 	} from '@/core/app'
@@ -155,17 +136,14 @@
 		name: `全部`,
 		value: 'all'
 	}, {
-		name: `待支付`,
-		value: 'payment'
-	}, {
 		name: `待发货`,
 		value: 'delivery'
 	}, {
 		name: `待收货`,
 		value: 'received'
 	}, {
-		name: `待评价`,
-		value: 'comment'
+		name: `已完成`,
+		value: 'complete'
 	}]
 
 	export default {
@@ -175,17 +153,29 @@
 		mixins: [MescrollMixin],
 		data() {
 			return {
+				isShowExpress: false,
+				isShowDelivery: false,
+				express_action: [],
 				// 枚举类
 				DeliveryStatusEnum,
 				DeliveryTypeEnum,
 				OrderStatusEnum,
-				PayStatusEnum,
-				PayTypeEnum,
-				ReceiptStatusEnum,
+
+				// 发货参数
+				form: {
+					// 订单ID
+					order_id: '',
+					// 物流公司id
+					express_id: '',
+					// 物流公司
+					express_company: '请选择快递公司',
+					// 物流单号
+					express_no: ''
+				},
 
 				// 当前页面参数
 				options: {
-					dataType: 'all'
+					type: 'all'
 				},
 				// tab栏数据
 				tabs,
@@ -210,9 +200,7 @@
 					}
 				},
 				// 控制首次触发onShow事件时不刷新列表
-				canReset: false,
-				// 支付方式弹窗
-				showPayPopup: false
+				canReset: false
 			}
 		},
 
@@ -228,17 +216,73 @@
 		 * 生命周期函数--监听页面显示
 		 */
 		onShow() {
+			this.getExpressList()
 			this.canReset && this.onRefreshList()
 			// this.canReset = true
 		},
 
 		methods: {
+			// 关闭发货弹窗
+			onCloseDelivery(order_id) {
+				this.form.order_id = order_id
+				this.isShowDelivery = !this.isShowDelivery
+			},
+
+			// 获取物流单号
+			getExpressNo(e) {
+				this.form.express_no = e.detail
+			},
+
+			// 选择快递类型
+			selectExpressType(event) {
+				const {
+					name,
+					express_id
+				} = event.detail
+				this.form.express_company = name
+				this.form.express_id = express_id
+			},
+
+			// 发货
+			onDelivery(order_id) {
+				MerchantsApi.deliveryOrder(this.form)
+					.then(res => {
+						console.log(res);
+						if (res.status == 200) {
+							this.form = {}
+							this.isShowDelivery = !this.isShowDelivery
+							this.$toast(res.message)
+							this.onRefreshList()
+						}
+					})
+					.catch(console.log)
+			},
+
+			// 显示快递列表
+			showExpress() {
+				this.isShowExpress = !this.isShowExpress
+			},
+
+			// 获取快递公司列表
+			getExpressList() {
+				MerchantsApi.getExpressList().then(res => {
+					this.express_action = res.data.list.map(({
+						express_id,
+						express_name
+					}) => {
+						return {
+							name: express_name,
+							express_id
+						}
+					})
+				})
+			},
 
 			// 初始化当前选中的标签
 			initCurTab(options) {
 				const app = this
-				if (options.dataType) {
-					const index = app.tabs.findIndex(item => item.value == options.dataType)
+				if (options.type) {
+					const index = app.tabs.findIndex(item => item.value == options.type)
 					app.curTab = index > -1 ? index : 0
 				}
 			},
@@ -264,8 +308,8 @@
 			getOrderList(pageNo = 1) {
 				const app = this
 				return new Promise((resolve, reject) => {
-					OrderApi.list({
-							dataType: app.getTabValue(),
+					MerchantsApi.getShopOrderList({
+							type: app.getTabValue(),
 							page: pageNo
 						}, {
 							load: false
@@ -312,103 +356,10 @@
 				}, 120)
 			},
 
-			// 取消订单
-			onCancel(orderId) {
-				const app = this
-				uni.showModal({
-					title: '友情提示',
-					content: '确认要取消该订单吗？',
-					success(o) {
-						if (o.confirm) {
-							OrderApi.cancel(orderId)
-								.then(result => {
-									// 显示成功信息
-									app.$toast(result.message)
-									// 刷新订单列表
-									app.onRefreshList()
-								})
-						}
-					}
-				});
-			},
-
-			// 确认收货
-			onReceipt(orderId) {
-				const app = this
-				uni.showModal({
-					title: '友情提示',
-					content: '确认收到商品了吗？',
-					success(o) {
-						if (o.confirm) {
-							OrderApi.receipt(orderId)
-								.then(result => {
-									// 显示成功信息
-									app.$success(result.message)
-									// 刷新订单列表
-									app.onRefreshList()
-								})
-						}
-					}
-				});
-			},
-
-			// 点击去支付
-			onPay(orderId) {
-				// 记录订单id
-				this.payOrderId = orderId
-				// 显示支付方式弹窗
-				this.showPayPopup = true
-			},
-
-			// 选择支付方式
-			onSelectPayType(payType) {
-				const app = this
-				// 隐藏支付方式弹窗
-				this.showPayPopup = false
-				// 发起支付请求
-				OrderApi.pay(app.payOrderId, payType)
-					.then(result => app.onSubmitCallback(result))
-			},
-
-			// 订单提交成功后回调
-			onSubmitCallback(result) {
-				const app = this
-				// 发起微信支付
-				if (result.data.pay_type == PayTypeEnum.WECHAT.value) {
-					wxPayment(result.data.payment)
-						.then(() => {
-							app.$success('支付成功')
-							setTimeout(() => {
-								app.onRefreshList()
-							}, 1500)
-						})
-						.catch(err => {
-							app.$error('订单未支付')
-						})
-						.finally(() => {
-							app.disabled = false
-						})
-				}
-				// 余额支付
-				if (result.data.pay_type == PayTypeEnum.BALANCE.value) {
-					app.$success('支付成功')
-					app.disabled = false
-					setTimeout(() => {
-						app.onRefreshList()
-					}, 1500)
-				}
-			},
 
 			// 跳转到订单详情页
 			handleTargetDetail(orderId) {
 				this.$navTo('pages/order/detail', {
-					orderId
-				})
-			},
-
-			// 跳转到订单评价页
-			handleTargetComment(orderId) {
-				this.$navTo('pages/order/comment/index', {
 					orderId
 				})
 			}
@@ -419,6 +370,18 @@
 </script>
 
 <style lang="scss" scoped>
+	.delivery-btn {
+		width: 300rpx;
+		height: 60rpx;
+		margin: 30rpx auto 50rpx auto;
+		color: white;
+		background-color: #fa2209;
+		line-height: 60rpx;
+		text-align: center;
+		border-radius: 30rpx;
+		font-size: 30rpx;
+	}
+
 	// 项目内容
 	.order-item {
 		margin: 20rpx auto 20rpx auto;

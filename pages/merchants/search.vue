@@ -1,7 +1,7 @@
 <template>
   <view class="search-container">
     <view class="search-box">
-      <u-search placeholder="搜索" :clearabled="true" v-model="keyword" @search="commitSearch" @custom="commitSearch">
+      <u-search placeholder="搜索" :clearabled="true" v-model="search" @search="commitSearch" @custom="commitSearch">
       </u-search>
     </view>
     <mescroll-body ref="mescrollRef" :sticky="true" @init="mescrollInit" :down="{ native: true,auto:false }"
@@ -35,7 +35,7 @@
   export default {
     data() {
       return {
-        keyword: '',
+        search: '',
         list: getEmptyPaginateObj(),
         // 上拉加载配置
         upOption: {
@@ -83,7 +83,7 @@
       getShopList(pageNo = 1) {
         const app = this
         return new Promise((resolve, reject) => {
-          MerchantsApi.nearbyShopList({ keyword: app.keyword, page: pageNo })
+          MerchantsApi.nearbyShopList({ search: app.search, page: pageNo })
             .then(result => {
               // 合并新数据
               const newList = result.data.list
@@ -99,7 +99,7 @@
 
       // 搜索关键词
       commitSearch() {
-        if (!this.keyword) return this.$toast('搜点什么吧~')
+        if (!this.search) return this.$toast('搜点什么吧~')
 
         this.getShopList()
       },

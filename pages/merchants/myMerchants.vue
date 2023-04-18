@@ -9,7 +9,7 @@
 			<view class="shop-enter">我的店铺</view>
 		</view>
 
-		<view class="section">
+		<view class="section" @click="toPaymentList">
 			<view class="section-title">经营数据</view>
 			<view class="data-box">
 				<view class="item" v-for="(item,i) in sellData">
@@ -56,38 +56,49 @@
 		{
 			title: '订单管理',
 			icon: 'shangpinguanli',
-			link: 'pages/merchants/goodsEditList'
+			link: 'pages/merchants/orderList'
+		},
+		{
+			title: '下载收款码',
+			icon: 'shangpinguanli',
+			link: ''
 		},
 		{
 			title: '收款码订单',
 			icon: 'shangpinguanli',
-			link: 'pages/merchants/goodsEditList'
+			link: 'pages/merchants/orderList'
 		}
 	]
 
 	const sellData = [{
 			title: "今日营业额",
-			data: "1980"
+			type: 'today',
+			data: "0"
 		},
 		{
 			title: "本周营业额",
-			data: "3678"
+			type: 'week',
+			data: "0"
 		},
 		{
 			title: "本月营业额",
-			data: "9873"
+			type: 'month',
+			data: "0"
 		},
 		{
 			title: "累计营业额",
-			data: "99999"
+			type: 'total',
+			data: "0"
 		},
 		{
 			title: "剩余营业额",
-			data: "100"
+			type: 'remain',
+			data: "0"
 		},
 		{
 			title: "已提现营业额",
-			data: "3000"
+			type: 'already_money',
+			data: "0"
 		}
 	]
 	export default {
@@ -100,22 +111,67 @@
 		},
 
 		onShow() {
-			Promise.all([this.getShopInfo(), this.getShopTradeInfo(), this.getShopPaymentList()])
+			Promise.all([this.getShopInfo(), this.getShopTradeInfo()])
 		},
 
 		methods: {
 			// 查看店铺详情
 			goShop() {
-				const url = `pages/merchants/home?store_shop_id=${this.shopInfo.shop_id}`
-				navTo(url)
+				navTo(`pages/merchants/home?store_shop_id=${this.shopInfo.shop_id}`)
+			},
+
+			// 查看店铺流水
+			toPaymentList() {
+				navTo('pages/merchants/paymentList', {
+					shop_id: this.shopInfo.shop_id
+				})
 			},
 
 			go(item) {
 				const {
 					link
 				} = item
-				navTo(link, {
-					store_shop_id: this.shopInfo.shop_id
+				if (link) {
+					return navTo(link, {
+						store_shop_id: this.shopInfo.shop_id
+					})
+				}
+				// 下载二维码
+				this.getShopCode()
+			},
+
+			// 下载二维码
+			getShopCode() {
+				MerchantsApi.createShopCode({
+						shop_id: this.shopInfo.shop_id
+					})
+					.then(res => {
+						this.saveImageToPhotosAlbum(res.data.url)
+					})
+					.catch(console.log)
+			},
+
+			// 保存图片到相册
+			saveImageToPhotosAlbum(imgUrl) {
+				uni.getImageInfo({
+					src: 'imgUrl',
+					success: (res) => {
+						uni.authorize({
+							scope: 'scope.writePhotosAlbum',
+							success: () => {
+								uni.saveImageToPhotosAlbum({
+									filePath: res.path,
+									success: () => {
+										this.$toast('已保存到相册~')
+									},
+									fail: () => {
+										this.$toast('保存失败!')
+									}
+								})
+							}
+						})
+
+					}
 				})
 			},
 
@@ -136,21 +192,13 @@
 				return new Promise((reslove, reject) => {
 					MerchantsApi.getShopTradeInfo()
 						.then(result => {
-							console.log(result);
-							reslove(result)
-						})
-						.catch(reject)
-				})
-			},
-
-			// 店铺营业额基本信息
-			getShopPaymentList() {
-				return new Promise((reslove, reject) => {
-					MerchantsApi.getShopPaymentList({
-							page: 1
-						})
-						.then(result => {
-							console.log(result);
+							for (let key in result.data) {
+								this.sellData.forEach(item => {
+									if (item.type === key) {
+										item['data'] = result.data[key]
+									}
+								})
+							}
 							reslove(result)
 						})
 						.catch(reject)

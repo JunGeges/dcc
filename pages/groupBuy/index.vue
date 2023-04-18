@@ -152,7 +152,7 @@
 				setTimeout(() => {
 					this.mescroll.resetUpScroll()
 				}, 500)
-			},
+			}
 		}
 	}
 </script>

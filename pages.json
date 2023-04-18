@@ -354,6 +354,20 @@
 				"enablePullDownRefresh": false
 			}
 
+		}, {
+			"path": "pages/merchants/orderList",
+			"style": {
+				"navigationBarTitleText": "订单管理",
+				"enablePullDownRefresh": true
+			}
+
+		}, {
+			"path": "pages/merchants/paymentList",
+			"style": {
+				"navigationBarTitleText": "店铺流水",
+				"enablePullDownRefresh": true
+			}
+
 		}
 	],
 	"subPackages": [{
@@ -372,7 +386,7 @@
 		"list": [{
 			"name": "店铺首页",
 			"path": "pages/merchants/home"
-		},{
+		}, {
 			"name": "向商户付款",
 			"path": "pages/payMerchant/payMerchant"
 		}, {

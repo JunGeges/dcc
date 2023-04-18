@@ -57,10 +57,6 @@
 	const operate_action = [{
 		name: '去付款',
 		type: 0
-
-	}, {
-		name: '生成付款码',
-		type: 1
 	}]
 	export default {
 		data() {
@@ -106,7 +102,9 @@
 					name,
 					type
 				} = event.detail
-				console.log(name, type);
+				navTo('pages/payMerchant/payMerchant', {
+					shop_id: this.shopInfo.shop_id
+				})
 			},
 
 			// 显示操作类型
@@ -185,9 +183,12 @@
 
 			.operate {
 				padding: 10rpx;
+
 				border: 3rpx solid #a5a5a5 {
-					width: 3rpx 3rpx  0 0;
-				};
+					width: 3rpx 3rpx 0 0;
+				}
+
+				;
 				margin-left: auto;
 				width: 0;
 				height: 0;

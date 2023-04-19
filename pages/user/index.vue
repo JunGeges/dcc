@@ -58,7 +58,7 @@
             <text>{{ setting[SettingKeyEnum.POINTS.value].points_name }}</text>
           </view>
         </view> -->
-        <view class="asset-left-item" @click="onTargetPrizeTicket">
+        <view class="asset-left-item">
           <view class="item-value dis-flex flex-x-center">
             <text>{{ isLogin ? assets.balance: '--' }}</text>
           </view>
@@ -178,7 +178,7 @@
     //   url: 'lucky/lucky/prizeList',
     //   flag: 'iconfont2'
     // },
-    // { id: 'friend', name: '我的好友', icon: 'tuandui', type: 'link', url: 'pages/team/index' },
+    { id: 'friend', name: '我的好友', icon: 'tuandui', type: 'link', url: 'pages/team/index' },
     { id: 'address', name: '收货地址', icon: 'shouhuodizhi', type: 'link', url: 'pages/address/index' },
     // { id: 'coupon', name: '领券中心', icon: 'lingquan', type: 'link', url: 'pages/coupon/index' },
     // { id: 'coupon', name: '领券中心', icon: 'lingquan', type: 'link', url: 'pages/coupon/index' },
@@ -187,7 +187,9 @@
     // { id: 'contact', name: '在线客服', icon: 'kefu', type: 'button', openType: 'contact' },
     // { id: 'points', name: '我的积分', icon: 'jifen', type: 'link', url: 'pages/points/log' },
     // { id: 'refund', name: '退换/售后', icon: 'shouhou', type: 'link', url: 'pages/refund/index', count: 0 },
-    // { id: 'bank', name: '我的银行卡', icon: 'yinhangka', type: 'link', url: 'pages/bank/bankList', flag: 'iconfont2' },
+    { id: 'bank', name: '我的银行卡', icon: 'yinhangka', type: 'link', url: 'pages/bank/bankList', flag: 'iconfont2' },
+    { id: 'hh', name: '互换平台', icon: 'line-swaphuhuan-01', type: 'link', url: 'pages/bank/bankList', flag: 'iconfont3' },
+    { id: 'ax', name: '爱心平台', icon: 'aixin', type: 'link', url: 'pages/bank/bankList', flag: 'iconfont3' },
     // { id: 'questionnaire', name: '问卷调查', icon: 'qpdingdan', type: 'link', url: 'pages/questionnaire/index' }
   ]
 
@@ -436,6 +438,7 @@
 
       // 跳转到服务页面
       handleService({ url, id }) {
+				if (id == 'ax' || id == 'hh') return this.$toast('正在开发中，敬请期待~')
         if (id == "shop") {
           url = this.userInfo.is_own_shop === 0 ? 'pages/merchants/merchantsEnter' : 'pages/merchants/myMerchants'
         }

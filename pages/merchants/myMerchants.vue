@@ -1,7 +1,7 @@
 <template>
 	<view class="shop-container">
 		<view class="head-box" @click="goShop">
-			<image class="logo" :src="shopInfo.logo_image_url" mode="aspectFit"></image>
+			<image class="logo" :src="shopInfo.logo_image_url" mode="aspectFill"></image>
 			<view class="shop-info">
 				<view class="sptitle">{{ shopInfo.store_name }}</view>
 				<view class="intro">{{ shopInfo.store_info }}</view>
@@ -55,18 +55,18 @@
 		},
 		{
 			title: '订单管理',
-			icon: 'shangpinguanli',
+			icon: 'dingdanguanli',
 			link: 'pages/merchants/orderList'
 		},
 		{
 			title: '下载收款码',
-			icon: 'shangpinguanli',
+			icon: 'shoukuanma',
 			link: ''
 		},
 		{
 			title: '收款码订单',
-			icon: 'shangpinguanli',
-			link: 'pages/merchants/orderList'
+			icon: 'dingdan',
+			link: 'pages/merchants/offlineOrderList'
 		}
 	]
 
@@ -154,7 +154,7 @@
 			// 保存图片到相册
 			saveImageToPhotosAlbum(imgUrl) {
 				uni.getImageInfo({
-					src: 'imgUrl',
+					src: imgUrl,
 					success: (res) => {
 						uni.authorize({
 							scope: 'scope.writePhotosAlbum',

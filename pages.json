@@ -368,6 +368,27 @@
 				"enablePullDownRefresh": true
 			}
 
+		}, {
+			"path": "pages/merchants/offlineOrderList",
+			"style": {
+				"navigationBarTitleText": "收款码订单",
+				"enablePullDownRefresh": true
+			}
+
+		}, {
+			"path": "pages/team/index",
+			"style": {
+				"navigationBarTitleText": "我的好友",
+				"enablePullDownRefresh": true
+			}
+
+		}, {
+			"path": "pages/withdraw/profitRecord",
+			"style": {
+				"navigationBarTitleText": "佣金记录",
+				"enablePullDownRefresh": true
+			}
+
 		}
 	],
 	"subPackages": [{

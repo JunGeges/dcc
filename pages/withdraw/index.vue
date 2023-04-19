@@ -21,7 +21,7 @@
 				<view class="mgr-30">元</view>
 			</view>
 			<view class="col-999 w-100 f-size21 mgt-20" style="text-align: right;">
-				提现扣除{{setting.withdraw.service_fee_scale}}%手续费</view>
+				提现扣除{{setting.withdraw_service}}%手续费</view>
 		</view>
 
 		<view class="pd-2030">
@@ -66,7 +66,7 @@
 				<!-- <view>1.提现仅支持提现到绑定的银行账户；</view>
 				<view class="mgt-10">2.提现1元起，必须为整数；</view>
 				<view class="mgt-10">3.提现扣除5%手续费</view> -->
-				<view>{{setting.withdraw.service_desc}}</view>
+				<view>{{setting.service_desc}}</view>
 			</view>
 		</view>
 	</view>
@@ -76,8 +76,7 @@
 	import * as BankApi from '@/api/bank'
 	import * as UserApi from '@/api/user'
 	import * as bkUtils from '@/utils/bankUtils'
-	import SettingKeyEnum from '@/common/enum/setting/Key'
-	import SettingModel from '@/common/model/Setting'
+	import * as MerchantsApi from '@/api/merchants'
 	export default {
 		data() {
 			return {
@@ -109,9 +108,9 @@
 		},
 
 		methods: {
-      toRecord() {
-        this.$navTo('pages/withdraw/record')
-      },
+			toRecord() {
+				this.$navTo('pages/withdraw/record')
+			},
 			assets() {
 				UserApi.assets().then(res => {
 					this.priceInfo = res.data.assets
@@ -155,15 +154,15 @@
 				}
 				if (!this.bankData.bank_id) {
 					this.$toast('请选择收款账户')
-          this.timer =setTimeout(()=>{
-            clearTimeout(this.timer)
-            this.selectBank()
-          },500)
+					this.timer = setTimeout(() => {
+						clearTimeout(this.timer)
+						this.selectBank()
+					}, 500)
 					return
 				}
 
-				if (this.param.money < this.setting.withdraw.start_money) {
-					this.$toast('提现金额不得低于' + this.setting.withdraw.start_money + "元")
+				if (this.param.money < this.setting.withdraw_start_money) {
+					this.$toast('提现金额不得低于' + this.setting.withdraw_start_money + "元")
 					return
 				}
 				this.param.bankId = this.bankData.bank_id
@@ -173,7 +172,7 @@
 					this.timer = setTimeout(() => {
 						clearTimeout(this.timer)
 						uni.navigateBack({})
-					},500)
+					}, 500)
 					if (res.status == 200) {
 						this.param.money = ''
 						this.assets()
@@ -190,9 +189,11 @@
 			getSetting() {
 				const app = this
 				return new Promise((resolve, reject) => {
-					SettingModel.data().then(setting => {
-						app.setting = setting
-						resolve(setting)
+					MerchantsApi.withdrawInfo().then(({
+						data
+					}) => {
+						app.setting = data
+						resolve(data)
 					}).catch(err => reject(err))
 				})
 			},
@@ -206,6 +207,7 @@
 		color: blue;
 		text-decoration: underline;
 	}
+
 	.container {
 		width: 100%;
 		height: 100vh;

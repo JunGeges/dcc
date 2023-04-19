@@ -1,7 +1,7 @@
 <template>
   <view class="container">
 
-    <!-- 页面头部 -->
+<!--    页面头部
     <view class="header">
       <view class="title">
         <text>手机号登录</text>
@@ -10,13 +10,13 @@
         <text>未注册的手机号登录后将自动注册</text>
       </view>
     </view>
-    <!-- 表单 -->
+    表单
     <view class="login-form">
-      <!-- 手机号 -->
+      手机号
       <view class="form-item">
         <input class="form-item--input" type="number" v-model="mobile" maxlength="11" placeholder="请输入手机号码" />
       </view>
-      <!-- 图形验证码 -->
+      图形验证码
       <view class="form-item">
         <input class="form-item--input" type="text" v-model="captchaCode" maxlength="5" placeholder="请输入图形验证码" />
         <view class="form-item--parts">
@@ -25,7 +25,7 @@
           </view>
         </view>
       </view>
-      <!-- 短信验证码 -->
+      短信验证码
       <view class="form-item">
         <input class="form-item--input" type="number" v-model="smsCode" maxlength="6" placeholder="请输入短信验证码" />
         <view class="form-item--parts">
@@ -35,11 +35,11 @@
           </view>
         </view>
       </view>
-      <!-- 登录按钮 -->
+      登录按钮
       <view class="login-button" @click="handleLogin">
         <text>登录</text>
       </view>
-    </view>
+    </view> -->
 
     <!-- 微信授权手机号一键登录 -->
     <!-- #ifdef MP-WEIXIN -->
@@ -225,7 +225,8 @@
             smsCode: app.smsCode,
             mobile: app.mobile,
             isParty: app.isParty,
-            partyData: app.partyData
+            partyData: app.partyData,
+            agentId: store.getters.superiorRefereeId
           })
           .then(result => {
             // 显示登录成功
@@ -348,3 +349,4 @@
     align-items: center;
   }
 </style>
+

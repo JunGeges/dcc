@@ -47,12 +47,12 @@
 			const {
 				shop_id
 			} = options
-			
+
 			this.shop_id = shop_id
 			this.payForm.shop_id = shop_id
-			
+
 			// 获取二维码参数
-			if(options.scene){
+			if (options.scene) {
 				this.shop_id = options.scene
 				this.payForm.shop_id = options.scene
 			}
@@ -60,6 +60,7 @@
 
 		onShow() {
 			this.getShopInfo()
+			this.bindShopUser()
 		},
 
 		methods: {
@@ -77,6 +78,12 @@
 				})
 			},
 
+			bindShopUser() {
+				MerchantsApi.bindShopUser({
+					shop_id: this.shop_id
+				}).catch(console.log)
+			},
+
 			// 获取支付金额
 			getMoney(e) {
 				const value = e.detail.value
@@ -90,7 +97,7 @@
 
 				return new Promise((reslove, reject) => {
 					MerchantsApi.payOfflineOrder(this.payForm)
-						.then(result => app.onSubmitCallback(result))
+						.then(result => this.onSubmitCallback(result))
 						.catch(reject)
 				})
 			},
@@ -99,8 +106,8 @@
 			onSubmitCallback(result) {
 				const app = this
 				// 发起微信支付
-				if (result.data.pay_type == PayTypeEnum.WECHAT.value) {
-					wxPayment(result.data.payment)
+				if (result.data.order.payType == PayTypeEnum.WECHAT.value) {
+					wxPayment(result.data.order.payment)
 						.then(() => {
 							app.$success('支付成功')
 							setTimeout(() => {
@@ -109,7 +116,6 @@
 								} else {
 									navTo('pages/merchants/home', {}, 'redirectTo')
 								}
-
 							}, 1500)
 						})
 						.catch(err => {

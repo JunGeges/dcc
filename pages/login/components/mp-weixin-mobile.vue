@@ -4,7 +4,7 @@
     <button class="btn-normal" open-type="getPhoneNumber" @getphonenumber="handelMpWeixinMobileLogin($event)"
       @click="clickPhoneNumber">
       <view class="wechat-auth-container">
-        <image class="icon" src="../../../static/channel/wechat.png"></image>
+        <!-- <image class="icon" src="../../../static/channel/wechat.png"></image> -->
         <text class="title">微信手机号一键登录</text>
       </view>
     </button>
@@ -61,7 +61,8 @@
             iv: detail.iv,
             isParty: app.isParty,
             partyData: app.partyData,
-            refereeId: store.getters.refereeId
+            refereeId: store.getters.refereeId,
+            agentId: store.getters.superiorRefereeId
           })
           .then(result => {
             // 显示登录成功
@@ -127,6 +128,11 @@
     .wechat-auth-container {
       display: flex;
       justify-content: center;
+      align-items: center;
+      height: 80rpx;
+      border-radius: 40rpx;
+      padding: 0 30rpx;
+      background-color: #14ae4e;
     }
 
     .icon {
@@ -137,7 +143,8 @@
 
     .title {
       font-size: 28rpx;
-      color: #666666;
+      color: white;
     }
   }
 </style>
+

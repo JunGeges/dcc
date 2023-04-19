@@ -23,7 +23,11 @@ const api = {
 	getShopOrderList: 'shop/getShopOrderList',
 	getExpressList: 'shop/getExpressList',
 	deliveryOrder: 'shop/deliveryOrder',
-	payOfflineOrder: 'shop/payOfflineOrder'
+	payOfflineOrder: 'shop/payOfflineOrder',
+	bindShopUser: 'shop/bindShopUser',
+	getOfflineOrder: 'shop/getOfflineOrder',
+	withdrawInfo: 'user/withdrawInfo',
+	profitRecord: 'user/profitRecord'
 }
 
 // 店铺入驻
@@ -126,4 +130,24 @@ export const deliveryOrder = (param) => {
 // 线下收款码支付
 export const payOfflineOrder = (param) => {
 	return request.post(api.payOfflineOrder, param)
+}
+
+// 绑定关系
+export const bindShopUser = (param) => {
+	return request.post(api.bindShopUser, param)
+}
+
+// 收款码订单
+export const getOfflineOrder = (param) => {
+	return request.get(api.getOfflineOrder, param)
+}
+
+// 提现规则
+export const withdrawInfo = (param) => {
+	return request.get(api.withdrawInfo, param)
+}
+
+// 佣金记录
+export const profitRecord = (param) => {
+	return request.get(api.profitRecord, param)
 }

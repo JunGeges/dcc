@@ -188,7 +188,6 @@
 					width: 3rpx 3rpx 0 0;
 				}
 
-				;
 				margin-left: auto;
 				width: 0;
 				height: 0;

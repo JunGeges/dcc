@@ -8,9 +8,9 @@
         <view class="top">
           <view class="tl">
             <!-- <image :src="getBankBg(item.card_name)" mode="widthFix"></image> -->
-            <view class="">{{ item.card_name }}</view>
+            <view class="">{{ item.bank_name }}({{ item.bank_card }})</view>
           </view>
-          <view class="tr">￥{{ item.earnings }}</view>
+          <view class="tr">￥{{ item.total_money }}</view>
         </view>
         <view class="mid">
           <view class="">{{ item.desc }}</view>
@@ -19,7 +19,7 @@
         <view class="bottom">
           <view class="bi">
             <text>实际到账</text>
-            <text>￥{{ item.fee }}</text>
+            <text>￥{{ item.money }}</text>
           </view>
           <view class="bi">
             <text>手续费</text>

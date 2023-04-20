@@ -47,6 +47,10 @@
               <view v-if="itemStyle.show.includes('goodsName')" class="goods-name">
                 <text class="twoline-hide">{{ dataItem.goods_name }}</text>
               </view>
+							<view class="shop-info">
+								<image :src="dataItem.logo_image_url" mode="aspectFill"></image>
+								<view class="">{{ dataItem.store_name }}</view>
+							</view>
               <!-- 商品价格 -->
               <view class="detail-price oneline-hide">
                 <text v-if="itemStyle.show.includes('goodsPrice')" class="goods-price f-30 col-m">￥{{ dataItem.goods_price_min }}</text>
@@ -140,6 +144,28 @@
             color: #484848;
             font-size: 26rpx;
           }
+					
+					.shop-info {
+						display: flex;
+						align-items: center;
+						margin-bottom: 10rpx;
+						
+						image {
+							width: 60rpx;
+							height: 60rpx;
+							border-radius: 50%;
+							margin-right: 10rpx;
+						}
+						
+						view {
+							width: 260rpx;
+							font-size: 30rpx;
+							color: #a5a5a5;
+							overflow: hidden;
+							white-space: nowrap;
+							text-overflow: ellipsis;
+						}
+					}
 
           .detail-price {
             .goods-price {

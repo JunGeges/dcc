@@ -11,6 +11,13 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-bili:before {
+  content: "\e64a";
+	font-size: 30px;
+	color: #c59a46;
+}
+
+
 .icon-aixin:before {
   content: "\e8ab";
 }
@@ -61,6 +68,8 @@
 
 .icon-shanghupiliangruzhu:before {
   content: "\e62b";
+	font-size: 30px;
+	color: #c59a46;
 }
 
 .icon-daohang:before {

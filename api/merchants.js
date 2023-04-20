@@ -27,7 +27,9 @@ const api = {
 	bindShopUser: 'shop/bindShopUser',
 	getOfflineOrder: 'shop/getOfflineOrder',
 	withdrawInfo: 'user/withdrawInfo',
-	profitRecord: 'user/profitRecord'
+	profitRecord: 'user/profitRecord',
+	editShopScale: 'shop/editShopScale',
+	shopProfitToUser: 'shop/shopProfitToUser'
 }
 
 // 店铺入驻
@@ -150,4 +152,14 @@ export const withdrawInfo = (param) => {
 // 佣金记录
 export const profitRecord = (param) => {
 	return request.get(api.profitRecord, param)
+}
+
+// 收款码平台抽成比例
+export const editShopScale = (param) => {
+	return request.post(api.editShopScale, param)
+}
+
+// 营业额转佣金
+export const shopProfitToUser = (param) => {
+	return request.post(api.shopProfitToUser, param)
 }

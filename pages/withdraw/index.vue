@@ -111,6 +111,7 @@
 			toRecord() {
 				this.$navTo('pages/withdraw/record')
 			},
+			
 			assets() {
 				UserApi.assets().then(res => {
 					this.priceInfo = res.data.assets

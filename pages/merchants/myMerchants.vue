@@ -9,9 +9,15 @@
 			<view class="shop-enter">我的店铺</view>
 		</view>
 
-		<view class="section" @click="toPaymentList">
-			<view class="section-title">经营数据</view>
-			<view class="data-box">
+		<view class="section">
+			<view class="section-title">
+				<view class="">经营数据</view>
+				<view class="right" @click="onCloseProfit">
+					<view class="">营业额转佣金</view>
+					<view class="operate"></view>
+				</view>
+			</view>
+			<view class="data-box" @click="toPaymentList">
 				<view class="item" v-for="(item,i) in sellData">
 					<view class="t">{{ item.title }}</view>
 					<view class="d">{{ item.data }}</view>
@@ -30,6 +36,22 @@
 			</view>
 		</view>
 
+		<!-- 设置比列区域 -->
+		<van-action-sheet :show="isShowRate" title="收款码平台抽成比例(%)" @close="onCloseRate">
+			<view>
+				<van-field :value="form.platform_code_scale" type="number" placeholder="请输入收款码平台抽成比例" :border="false"
+					@change="getRate" />
+				<view class="delivery-btn" @click="onUpdateRate">确认修改</view>
+			</view>
+		</van-action-sheet>
+		<!-- 营业额转佣金区域 -->
+		<van-action-sheet :show="isShowProfit" title="营业额转个人佣金" @close="onCloseProfit">
+			<view>
+				<van-field :value="remain" readonly type="number" placeholder="请输入收款码平台抽成比例" :border="false" />
+				<view class="delivery-btn" @click="shopProfitToUser">确认转换</view>
+			</view>
+		</van-action-sheet>
+
 	</view>
 </template>
 
@@ -40,8 +62,13 @@
 	import * as MerchantsApi from '@/api/merchants'
 	const items = [{
 			title: '店铺信息',
-			icon: 'dianpuguanli',
+			icon: 'shanghupiliangruzhu',
 			link: 'pages/merchants/merchantsEnter?flag=1'
+		}, {
+			title: '抽成比列',
+			icon: 'dianpuguanli',
+			link: '',
+			rate: 1
 		},
 		{
 			title: '添加商品',
@@ -106,7 +133,13 @@
 			return {
 				items,
 				sellData,
-				shopInfo: {}
+				isShowRate: false,
+				isShowProfit: false,
+				form: {
+					platform_code_scale: ''
+				},
+				shopInfo: {},
+				remain: ''
 			}
 		},
 
@@ -126,15 +159,61 @@
 					shop_id: this.shopInfo.shop_id
 				})
 			},
+			
+			// 切换转换操作弹窗
+			onCloseProfit() {
+				this.isShowProfit = !this.isShowProfit
+			},
+
+			// 切换比例设置弹窗
+			onCloseRate() {
+				this.isShowRate = !this.isShowRate
+			},
+
+			// 获取比例
+			getRate(e) {
+				this.form.platform_code_scale = e.detail
+			},
+			
+			// 转换佣金
+			shopProfitToUser() {
+				MerchantsApi.shopProfitToUser()
+					.then(res => {
+						this.$toast(res.message)
+						setTimeout(() => {
+							this.onCloseProfit()
+							this.getShopTradeInfo()
+						}, 1500)
+					})
+					.catch(console.log)
+			},
+
+			// 修改比例
+			onUpdateRate() {
+				MerchantsApi.editShopScale(this.form)
+					.then(res => {
+						this.$toast(res.message)
+						setTimeout(() => {
+							this.onCloseRate()
+							this.form.platform_code_scale = ''
+						}, 1500)
+					})
+					.catch(console.log)
+			},
 
 			go(item) {
 				const {
-					link
+					link,
+					rate
 				} = item
 				if (link) {
 					return navTo(link, {
 						store_shop_id: this.shopInfo.shop_id
 					})
+				}
+
+				if (rate) {
+					return this.onCloseRate()
 				}
 				// 下载二维码
 				this.getShopCode()
@@ -181,6 +260,7 @@
 					MerchantsApi.detail()
 						.then(res => {
 							this.shopInfo = res.data.info
+							this.form.platform_code_scale = parseFloat(res.data.info.platform_code_scale)
 							reslove(res)
 						})
 						.catch(reject)
@@ -192,6 +272,7 @@
 				return new Promise((reslove, reject) => {
 					MerchantsApi.getShopTradeInfo()
 						.then(result => {
+							this.remain = result.data.remain
 							for (let key in result.data) {
 								this.sellData.forEach(item => {
 									if (item.type === key) {
@@ -210,19 +291,55 @@
 
 <style lang="scss" scoped>
 	.shop-container {
+		/deep/ .van-field__control {
+			text-align: center;
+		}
+		.delivery-btn {
+			width: 300rpx;
+			height: 60rpx;
+			margin: 30rpx auto 50rpx auto;
+			color: white;
+			background-color: #fa2209;
+			line-height: 60rpx;
+			text-align: center;
+			border-radius: 30rpx;
+			font-size: 30rpx;
+		}
+
 		.section {
 			background-color: white;
 			margin-top: 30rpx;
 
 			.section-title {
 				padding: 0 40rpx;
+				display: flex;
+				align-items: center;
 				height: 100rpx;
-				line-height: 100rpx;
 				border-bottom: 1rpx solid #efefef;
 				box-sizing: border-box;
 				color: #151515;
 				font-size: 32rpx;
 				// font-weight: 600;
+				
+				.right {
+					margin-left: auto;
+					display: flex;
+					height: 100%;
+					align-items: center;
+					.operate {
+						padding: 10rpx;
+					
+						border: 3rpx solid #a5a5a5 {
+							width: 3rpx 3rpx 0 0;
+						}
+					
+						margin-left: auto;
+						width: 0;
+						height: 0;
+						box-sizing: border-box;
+						transform: rotate(45deg)
+					}
+				}
 			}
 
 			.data-box {

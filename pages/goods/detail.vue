@@ -68,6 +68,13 @@
 				</view>
 			</view>
 		</view>
+		
+		<!-- 店铺区域 -->
+		<view class="shop-info" @click="toShopHome(goods.shop_info.shop_id)">
+			<image :src="goods.shop_info.logo_image_url" mode="aspectFill"></image>
+			<view class="">{{ goods.shop_info.store_name }}</view>
+			<view class="operate"></view>
+		</view>
 
 		<!-- 商品服务 -->
 		<Service v-if="!isLoading" :goods-id="goodsId" />
@@ -158,6 +165,7 @@
 	import SkuPopup from './components/SkuPopup'
 	import Comment from './components/Comment'
 	import Service from './components/Service'
+	import { navTo } from '@/core/app'
 
 	export default {
 		components: {
@@ -238,6 +246,10 @@
 						.catch(reject)
 				})
 			},
+			
+			toShopHome(shop_id) {
+				navTo('pages/merchants/home', { store_shop_id: shop_id })
+			},
 
 			// 更新购物车数量
 			onAddCart(total) {
@@ -308,6 +320,47 @@
 </style>
 <style lang="scss" scoped>
 	@import "./detail.scss";
+	
+	.shop-info {
+		display: flex;
+		align-items: center;
+		margin-bottom: 10rpx;
+		background-color: white;
+		margin-top: 30rpx;
+		padding: 30rpx;
+		box-sizing: border-box;
+		
+		.operate {
+			padding: 10rpx;
+		
+			border: 3rpx solid #a5a5a5 {
+				width: 3rpx 3rpx 0 0;
+			}
+		
+			margin-left: auto;
+			width: 0;
+			height: 0;
+			box-sizing: border-box;
+			transform: rotate(45deg)
+		}
+		
+		image {
+			width: 100rpx;
+			height: 100rpx;
+			border-radius: 12rpx;
+			margin-right: 30rpx;
+		}
+		
+		view {
+			width: 300rpx;
+			font-size: 32rpx;
+			color: #343434;
+			font-weight: 600;
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+		}
+	}
 
 	.tuan {
 		color: white;

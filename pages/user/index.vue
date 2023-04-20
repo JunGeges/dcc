@@ -47,7 +47,7 @@
             <text>{{ isLogin ? assets.profit || 0: '--' }}</text>
           </view>
           <view class="item-name dis-flex flex-x-center">
-            <text>我的钱包</text>
+            <text>可提现佣金</text>
           </view>
         </view>
         <!--        <view class="asset-left-item" @click="onTargetPoints">
@@ -58,12 +58,12 @@
             <text>{{ setting[SettingKeyEnum.POINTS.value].points_name }}</text>
           </view>
         </view> -->
-        <view class="asset-left-item">
+        <view class="asset-left-item" @click="toProfitRecord">
           <view class="item-value dis-flex flex-x-center">
-            <text>{{ isLogin ? assets.balance: '--' }}</text>
+            <text>{{ isLogin ? assets.total_profit || 0: '--' }}</text>
           </view>
           <view class="item-name dis-flex flex-x-center">
-            <text>余额</text>
+            <text>累计佣金</text>
           </view>
         </view>
       </view>
@@ -230,6 +230,10 @@
     },
 
     methods: {
+			
+			toProfitRecord() {
+				this.$navTo('pages/withdraw/profitRecord')
+			},			
 
       // 刷新页面
       onRefreshPage() {

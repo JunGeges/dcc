@@ -3,13 +3,12 @@
 		<mescroll-body ref="mescrollRef" @init="mescrollInit" :down="{ native: true,use:true }" @down="downCallback"
 			:up="upOption" @up="upCallback">
 			<view class="item" v-for="item,i in list.data" :key="i">
-				<image class="img" :src="item.user.avatar_url" mode="aspectFit"></image>
 				<view class="left">
-					<view class="t">{{ item.user.nick_name}}</view>
+					<view class="t">{{ item.describe}}</view>
 					<view class="t">{{ item.user.mobile }}</view>
 					<view class="b">{{ item.create_time }}</view>
 				</view>
-				<view class="right">+{{ item.pay_price }}</view>
+				<view class="right">+{{ item.money }}</view>
 			</view>
 		</mescroll-body>
 	</view>
@@ -115,12 +114,12 @@
 			padding: 20rpx 0;
 			// height: 120rpx;
 			
-			.img {
-				width: 100rpx;
-				height: 100rpx;
-				border-radius: 50%;
-				margin-right: 20rpx;
-			}
+			// .img {
+			// 	width: 100rpx;
+			// 	height: 100rpx;
+			// 	border-radius: 50%;
+			// 	margin-right: 20rpx;
+			// }
 
 			.left {
 				line-height: 50rpx;

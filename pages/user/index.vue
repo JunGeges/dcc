@@ -188,8 +188,8 @@
     // { id: 'points', name: '我的积分', icon: 'jifen', type: 'link', url: 'pages/points/log' },
     // { id: 'refund', name: '退换/售后', icon: 'shouhou', type: 'link', url: 'pages/refund/index', count: 0 },
     { id: 'bank', name: '我的银行卡', icon: 'yinhangka', type: 'link', url: 'pages/bank/bankList', flag: 'iconfont2' },
-    { id: 'hh', name: '互换平台', icon: 'line-swaphuhuan-01', type: 'link', url: 'pages/bank/bankList', flag: 'iconfont3' },
-    { id: 'ax', name: '爱心平台', icon: 'aixin', type: 'link', url: 'pages/bank/bankList', flag: 'iconfont3' },
+    { id: 'hh', name: '互换平台', icon: 'line-swaphuhuan-01', type: 'link', url: 'pages/platform/exchange', flag: 'iconfont3' },
+    { id: 'ax', name: '爱心平台', icon: 'aixin', type: 'link', url: 'pages/platform/love', flag: 'iconfont3' },
     // { id: 'questionnaire', name: '问卷调查', icon: 'qpdingdan', type: 'link', url: 'pages/questionnaire/index' }
   ]
 
@@ -442,7 +442,6 @@
 
       // 跳转到服务页面
       handleService({ url, id }) {
-				if (id == 'ax' || id == 'hh') return this.$toast('正在开发中，敬请期待~')
         if (id == "shop") {
           url = this.userInfo.is_own_shop === 0 ? 'pages/merchants/merchantsEnter' : 'pages/merchants/myMerchants'
         }

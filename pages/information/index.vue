@@ -191,7 +191,7 @@
 		.item {
 			border-radius: 15rpx;
 			margin-top: 30rpx;
-			padding: 20rpx 30rpx 0 30rpx;
+			padding: 20rpx 30rpx;
 			box-sizing: border-box;
 			background-color: white;
 			box-shadow: 0 0 10rpx #efefef;

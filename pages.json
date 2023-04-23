@@ -389,6 +389,34 @@
 				"enablePullDownRefresh": true
 			}
 
+		}, {
+			"path": "pages/platform/love",
+			"style": {
+				"navigationBarTitleText": "爱心平台",
+				"enablePullDownRefresh": true
+			}
+
+		}, {
+			"path": "pages/platform/exchange",
+			"style": {
+				"navigationBarTitleText": "互换平台",
+				"enablePullDownRefresh": true
+			}
+
+		}, {
+			"path": "pages/platform/lovePublish",
+			"style": {
+				"navigationBarTitleText": "发布",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/platform/exchangePublish",
+			"style": {
+				"navigationBarTitleText": "发布",
+				"enablePullDownRefresh": false
+			}
+
 		}
 	],
 	"subPackages": [{

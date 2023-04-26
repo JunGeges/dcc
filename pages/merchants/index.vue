@@ -111,9 +111,9 @@
 			 * 其中page.num:当前页 从1开始, page.size:每页数据条数,默认10
 			 * @param {Object} page
 			 */
-			upCallback(page) {
+			async upCallback(page) {
 				const app = this
-				// await app.getCateList()
+				await app.getCateList()
 				// 设置列表数据
 				app.getShopList(page.num)
 					.then(list => {
@@ -175,23 +175,23 @@
 			},
 
 			// 获取分类集合
-			// getCateList() {
-			//   MerchantsApi.categoryList().then(res => {
-			//     this.cateList = res.data.list.map(item => {
-			//       return {
-			//         name: item.category_name,
-			//         category_name: item.category_name,
-			//         category_id: item.category_id,
-			//       }
-			//     })
+			getCateList() {
+			  MerchantsApi.getShopCategory().then(res => {
+			    this.cateList = res.data.list.map(item => {
+			      return {
+			        name: item.name,
+			        category_name: item.name,
+			        category_id: item.category_id,
+			      }
+			    })
 
-			//     this.cateList.unshift({
-			//       name: '全部',
-			//       category_name: '全部',
-			//       category_id: 0,
-			//     })
-			//   })
-			// },
+			    this.cateList.unshift({
+			      name: '全部',
+			      category_name: '全部',
+			      category_id: 0,
+			    })
+			  })
+			},
 
 			getNoticeList() {
 				MerchantsApi.notice().then(res => {

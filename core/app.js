@@ -50,8 +50,9 @@ export const showToast = (msg, duration = 1500, mask = true) => {
 export const getTabBarLinks = () => {
   const tabBarLinks = [
     'pages/index/index',
-    'pages/category/index',
-    'pages/cart/index',
+    'pages/merchants/index',
+    'pages/groupBuy/index',
+		'pages/information/index',
     'pages/user/index'
   ]
   return tabBarLinks

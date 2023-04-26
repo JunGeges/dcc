@@ -417,6 +417,13 @@
 				"enablePullDownRefresh": false
 			}
 
+		}, {
+			"path": "pages/merchants/protocol",
+			"style": {
+				"navigationBarTitleText": "入驻协议",
+				"enablePullDownRefresh": false
+			}
+
 		}
 	],
 	"subPackages": [{
@@ -481,7 +488,8 @@
 			"van-popup": "wxcomponents/vant/popup/index",
 			"van-dialog": "wxcomponents/vant/dialog/index",
 			"van-radio-group": "wxcomponents/vant/radio-group/index",
-			"van-action-sheet": "wxcomponents/vant/action-sheet/index"
+			"van-action-sheet": "wxcomponents/vant/action-sheet/index",
+			"van-checkbox": "wxcomponents/vant/checkbox/index"
 		}
 	},
 	"easycom": {

@@ -68,7 +68,6 @@
     watch: {
       // 监听v-model
       value(val) {
-        console.log('val', val)
         // 设置默认选中的值
         this.valueText = val.map(item => item.label).join('/')
         this.setDefaultValue(val)

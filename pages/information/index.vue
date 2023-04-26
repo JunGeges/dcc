@@ -2,7 +2,17 @@
 	<mescroll-body ref="mescrollRef" @init="mescrollInit" :down="{ native: true,use:true }" @down="downCallback"
 		:up="upOption" @up="upCallback">
 		<van-dialog id="van-dialog" />
-		<view class="center-container" v-if="list.data.length">
+		<view class="center-container">
+			<view class="search-box">
+				<view class="city">
+					<view>
+						<select-region v-model="region" placeholder="全国" @change="getSelectArea" />
+					</view>
+					<uni-icons type="arrowdown" color="#666" size="18" />
+				</view>
+				<u-search placeholder="搜索" :clearabled="true" :show-action="false" @search="toSearch">
+				</u-search>
+			</view>
 			<view class="item" v-for="item in list.data">
 				<view class="ctitle">{{ item.intro }}</view>
 				<view class="date">{{ item.create_time }}</view>
@@ -22,9 +32,6 @@
 
 			<view class="send-btn" @click="toSendArticle" v-if="isZz">+ 发布本地团购</view>
 		</view>
-		<view class="no-goods" v-else>
-			<!-- 暂无信息~ -->
-		</view>
 	</mescroll-body>
 </template>
 
@@ -38,6 +45,7 @@
 		getMoreListData,
 		navTo
 	} from '@/core/app'
+	import SelectRegion from '@/components/select-region/select-region'
 	// 每页记录数量
 	const pageSize = 15
 
@@ -46,6 +54,17 @@
 			return {
 				// 是否是站长
 				isZz: 0,
+				// 省市区
+				region: '',
+				// 城市
+				city: '全国',
+				// 表单
+				form: {
+					city_id: '',
+					province_id: '',
+					region_id: '',
+					search: ''
+				},
 				// 团购数据列表
 				list: getEmptyPaginateObj(),
 				// 上拉加载配置
@@ -67,7 +86,8 @@
 		},
 
 		components: {
-			MescrollBody
+			MescrollBody,
+			SelectRegion
 		},
 
 		mixins: [MescrollMixin],
@@ -101,7 +121,8 @@
 				const app = this
 				return new Promise((resolve, reject) => {
 					StationsApi.getStationNewsList({
-							page: pageNo
+							page: pageNo,
+							...this.form
 						})
 						.then(result => {
 							// 合并新数据
@@ -128,6 +149,20 @@
 					urls,
 					loop: true
 				})
+			},
+
+			// 搜索团购
+			toSearch(e) {
+				this.form.search = e
+				this.onRefreshList()
+			},
+
+			// 获取选择的省市区
+			getSelectArea(res) {
+				this.form.province_id = res[0].value
+				this.form.city_id = res[1].value
+				this.form.region_id = res[2].value
+				this.onRefreshList()
 			},
 
 			// 发布本地团购
@@ -238,6 +273,37 @@
 
 				view {
 					margin-left: 30rpx;
+				}
+			}
+		}
+
+		.search-box {
+			display: flex;
+			align-items: center;
+			padding: 0 30rpx;
+			box-sizing: border-box;
+			background-color: white;
+
+			/deep/ u-search {
+				flex: 1;
+			}
+
+			.city {
+				/* #ifndef APP-PLUS-NVUE */
+				display: flex;
+				/* #endif */
+				flex-direction: row;
+				align-items: center;
+				justify-content: flex-start;
+				// width: 160rpx;
+				margin-left: 4px;
+				margin-right: 30rpx;
+
+				/deep/ .oneline-hide {
+					width: 100rpx;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+					overflow: hidden;
 				}
 			}
 		}

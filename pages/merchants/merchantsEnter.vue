@@ -2,14 +2,28 @@
 	<view class="merchants-enter-container">
 
 		<van-cell-group title="请上传店铺LOGO">
-			<van-uploader upload-icon="plus" :file-list="fileList" @after-read="logoAfterRead" :max-count="1"
-				@delete="deleteImg" />
+			<van-uploader upload-icon="plus" :file-list="fileLogoList" @after-read="logoAfterRead" :max-count="1"
+				@delete="deleteImg(0)" />
 			<view class="tip">{{ verify.logo_image_id }}</view>
+		</van-cell-group>
+		<van-cell-group title="请上传营业执照">
+			<van-uploader upload-icon="plus" :file-list="fileZzList" @after-read="zzAfterRead" :max-count="1"
+				@delete="deleteImg(1)" />
+			<view class="tip">{{ verify.business_image_id }}</view>
+		</van-cell-group>
+		<van-cell-group title="其它补充材料(比如食品许可)">
+			<van-uploader upload-icon="plus" :file-list="fileQtList" @after-read="qtAfterRead" :max-count="1"
+				@delete="deleteImg(2)" />
 		</van-cell-group>
 
 		<view>
 			<van-cell-group title="商户信息" inset>
-				<van-cell title="店铺类型" is-link :value="shop_type_tip" required @click="showShopType" />
+
+				<van-field :value="form.shop_type_name" required clearable label="店铺类型" placeholder="店铺类型" readonly
+					right-icon="arrow" :error-message="verify.shop_type" @click-input="showShopType" />
+
+				<van-field :value="form.category_name" required clearable label="店铺分类" placeholder="请选择分类" readonly
+					right-icon="arrow" :error-message="verify.category_id" @click-input="showCateList" />
 				<van-field :value="form.store_name" @input="form.store_name = $event.mp.detail" required clearable
 					label="店铺名称" placeholder="请输入店铺名称" :error-message="verify.store_name" />
 
@@ -33,9 +47,12 @@
 				<van-field :value="form.detail" @input="form.detail = $event.mp.detail" required clearable label="详细地址"
 					placeholder="街道门牌、楼层等信息" :border="false" :error-message="verify.detail" />
 
+				<van-checkbox :value="checked" iconSize="15"  checkedColor="red" shape="square" @change="onChangeChecked">
+				  <text @click.stop="toProtocol" style="color: blue;text-decoration: underline;">店铺入驻协议</text>
+				</van-checkbox>
 
 			</van-cell-group>
-
+			
 
 			<van-button color="#fa2209" size="large" @click="save">保存</van-button>
 
@@ -95,11 +112,14 @@
 	export default {
 		data() {
 			return {
+				// 勾选协议
+				checked: false,
 				// 店铺类型
 				shop_type_action,
 				isShowShopType: false,
-				shop_type_tip: '请选择店铺类型',
-				fileList: [],
+				fileLogoList: [],
+				fileZzList: [],
+				fileQtList: [],
 				showArea: false,
 				showCate: false,
 				// 分类
@@ -122,13 +142,19 @@
 					// 店铺详细地址
 					detail: '',
 					// 分类ID
-					// category_id: '',
+					category_id: '',
 					// 分类名
-					// category_name: '',
+					category_name: '',
 					// logoID
 					logo_image_id: '',
+					// 营业执照
+					business_image_id: '',
+					// 其它材料
+					license_image_id: '',
 					// 店铺类型
-					shop_type: -1
+					shop_type: '',
+					// 店铺类型名
+					shop_type_name: ''
 				},
 				verify: {},
 				// 省市区
@@ -179,7 +205,7 @@
 				title: flag ? '编辑店铺' : '店铺入驻'
 			})
 
-			// this.getCategoryList()
+			this.getCategoryList()
 
 			if (flag) {
 				// 获取店铺详情
@@ -189,8 +215,15 @@
 						store_info,
 						logo_image_id,
 						shop_type,
-						// category_id,
+						category_id,
+						category: {
+							name: cname
+						},
 						logo_image_url,
+						business_image_id,
+						business_image_url,
+						license_image_id,
+						license_image_url
 					} = res.data.info
 					const {
 						detail,
@@ -215,27 +248,34 @@
 					this.form.latitude = latitude
 					this.form.longitude = longitude
 					this.form.logo_image_id = logo_image_id
-					this.form.logo_image_url = logo_image_url
+					this.form.business_image_id = business_image_id
+					this.form.license_image_id = license_image_id || ''
 					this.form.shop_type = shop_type
-					this.shop_type_tip = this.handleShopType(shop_type)
-						// this.form.category_id = category_id + ''
-						// this.form.category_name = this.categoryList.filter(item => item.category_id == category_id)[0].text
-						this.form.region = [{
-								label: province,
-								value: province_id
-							},
-							{
-								label: city,
-								value: city_id
-							},
-							{
-								label: region,
-								value: region_id
-							}
-						]
+					this.form.shop_type_name = this.handleShopType(shop_type)
+					this.form.category_id = category_id + ''
+					this.form.category_name = cname
+					this.form.region = [{
+							label: province,
+							value: province_id
+						},
+						{
+							label: city,
+							value: city_id
+						},
+						{
+							label: region,
+							value: region_id
+						}
+					]
 
-					this.fileList.push({
+					this.fileLogoList.push({
 						url: logo_image_url
+					})
+					this.fileZzList.push({
+						url: business_image_url
+					})
+					license_image_id && this.fileQtList.push({
+						url: license_image_url
 					})
 				})
 			}
@@ -255,6 +295,17 @@
 						app.form.longitude = lng + ''
 						app.form.latitude = lat + ''
 					}
+				})
+			},
+			
+			// 电子协议
+			onChangeChecked(e) {
+				this.checked = e.detail
+			},
+			
+			toProtocol() {
+				uni.navigateTo({
+					url: 'protocol',
 				})
 			},
 
@@ -285,7 +336,7 @@
 					type
 				} = event.detail
 				this.form.shop_type = type
-				this.shop_type_tip = name
+				this.form.shop_type_name = name
 			},
 
 			// 显示分类
@@ -319,24 +370,11 @@
 				this.form.category_name = this.categoryList.filter(item => item.category_id == category_id)[0].text
 			},
 
-			// LOGO上传
-			logoAfterRead(file) {
-				const {
-					url: path,
-					size
-				} = file.detail.file
-				this.fileList.push({
-					path,
-					size
-				})
-				this.uploadFile()
-			},
-
 			// 提交保存
 			save() {
 				const result = this.checkField()
-				console.log(result, '~~~~', this.form);
 				if (result > 0) return
+				if(!this.checked) return this.$toast('请勾选店铺入驻协议~')
 				// 提交后台
 				MerchantsApi[this.flag ? "edit" : "add"](this.form).then(res => {
 					this.$toast('保存成功')
@@ -349,15 +387,15 @@
 
 			// 获取分类
 			getCategoryList() {
-				MerchantsApi.categoryList().then(res => {
+				MerchantsApi.getShopCategory().then(res => {
 					this.categoryList = res.data.list.map(({
-						category_name,
+						name,
 						category_id
 					}) => {
 						return {
-							text: category_name,
+							text: name,
 							category_id,
-							name: category_name
+							name
 						}
 					})
 				})
@@ -370,15 +408,18 @@
 					store_name: '店铺名称',
 					store_info: '店铺简介',
 					shop_type: '店铺类型',
+					category_id: '店铺分类',
 					detail: '详细地址',
 					name: '联系人',
 					phone: '联系方式',
 					region: '省市区',
 					logo_image_id: '店铺LOGO',
+					business_image_id: '营业执照'
 				}
 				let index = 0
 				for (let key in form) {
-					if (!(form[key] + '').length) {
+					// license_image_id 不必填
+					if (key !== 'license_image_id' && !(form[key] + '').length) {
 						index++
 						this.$set(this.verify, key, `${conifg[key]}不能为空~`)
 					}
@@ -388,9 +429,11 @@
 			},
 
 			// 删除图片
-			deleteImg() {
-				this.fileList.splice(0, 1)
-				this.form.logo_image_id = ''
+			deleteImg(index) {
+				const configList = ['fileLogoList', 'fileZzList', 'fileQtList']
+				const configId = ['logo_image_id', 'business_image_id', 'license_image_id']
+				this[`${ configList[index] }`].splice(0, 1)
+				this.form[`${configId[index]}`] = ''
 			},
 
 			// 文件长传回调
@@ -399,20 +442,50 @@
 					url: path,
 					size
 				} = file.detail.file
-				this.fileList.push({
+				this.fileLogoList.push({
 					path,
 					size,
 					url: path,
 				})
-				this.uploadFile()
+				this.uploadFile(0)
 			},
 
+			zzAfterRead(file) {
+				const {
+					url: path,
+					size
+				} = file.detail.file
+				this.fileZzList.push({
+					path,
+					size,
+					url: path,
+				})
+				this.uploadFile(1)
+			},
+
+			qtAfterRead(file) {
+				const {
+					url: path,
+					size
+				} = file.detail.file
+				this.fileQtList.push({
+					path,
+					size,
+					url: path,
+				})
+				this.uploadFile(2)
+			},
+
+
+
 			// 上传图片
-			uploadFile() {
+			uploadFile(idx) {
 				const app = this
+				const configList = ['fileLogoList', 'fileZzList', 'fileQtList']
+				const configId = ['logo_image_id', 'business_image_id', 'license_image_id']
 				// 整理上传文件路径
 				const files = []
-				const images = this.fileList.map(image => image)
+				const images = this[`${ configList[idx] }`].map(image => image)
 				files.push({
 					formDataIndex: 0,
 					images
@@ -424,7 +497,7 @@
 							return new Promise((resolve, reject) => {
 								UploadApi.image(file.images)
 									.then((fileIds, result) => {
-										app.form.logo_image_id = fileIds[0] + ''
+										app.form[`${ configId[idx] }`] = fileIds[0] + ''
 										resolve(fileIds)
 									})
 									.catch(reject)
@@ -440,6 +513,11 @@
 <style lang="scss" scoped>
 	.merchants-enter-container {
 		height: 100vh;
+		
+		/deep/ .van-checkbox {
+			justify-content: center;
+			margin-top: 30rpx;
+		}
 
 		/deep/ .van-popup {
 			padding: 30rpx;

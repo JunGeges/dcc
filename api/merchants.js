@@ -29,7 +29,9 @@ const api = {
 	withdrawInfo: 'user/withdrawInfo',
 	profitRecord: 'user/profitRecord',
 	editShopScale: 'shop/editShopScale',
-	shopProfitToUser: 'shop/shopProfitToUser'
+	shopProfitToUser: 'shop/shopProfitToUser',
+	getShopProtocol: 'shop/getShopProtocol',
+	getShopCategory: 'shop/getShopCategory'
 }
 
 // 店铺入驻
@@ -162,4 +164,14 @@ export const editShopScale = (param) => {
 // 营业额转佣金
 export const shopProfitToUser = (param) => {
 	return request.post(api.shopProfitToUser, param)
+}
+
+// 店铺入驻协议
+export const getShopProtocol = (param) => {
+	return request.get(api.getShopProtocol, param)
+}
+
+// 店铺分类
+export const getShopCategory = (param) => {
+	return request.get(api.getShopCategory, param)
 }
